@@ -1,13 +1,10 @@
-const headers = {
-  "ocp-apim-subscription-key": "311f4b451bf94524acb13b44b6bdbef8",
-};
+const aux = require("../functions/auxiliars");
 
 const endpoints = [
   aux.createEndpoint(
     {
       name: "support",
       url: "https://dev-api.iryo.eu/b2c/support",
-      headers,
       folder: "./results",
     },
     [

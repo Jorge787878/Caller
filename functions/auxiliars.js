@@ -66,8 +66,15 @@ function getDataInPath(obj, path, separator = ".") {
   return currentData;
 }
 
+function createNewConfig() {
+  return {
+    headers: {}
+  }
+}
+
 module.exports = {
   createEndpoint,
   getDataInPath,
   onSuccesCallWriteData,
+  createNewConfig
 };

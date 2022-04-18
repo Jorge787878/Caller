@@ -1,8 +1,8 @@
-const endpointsPokemons = require("./endpoints/pokemons");
-const core = require("./functions/core");
+const init = require("./functions/inits");
 
-function init() {
-  core.callToEndPoints(endpointsPokemons);
+function initialize() {
+  init.callsB2c();
+  init.callsPokemons();
 }
 
-init();
+initialize();
