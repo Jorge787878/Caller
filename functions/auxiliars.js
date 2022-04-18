@@ -10,6 +10,31 @@ function _getFilename(call) {
   }
 }
 
+function _createEndpointCallObj() {
+  return {
+    endPoint: "",
+    data: {},
+    params: {},
+    method: "get",
+    onSucces: {
+      create: {
+        newFileName: "",
+      },
+      usePath: "data",
+    },
+  };
+}
+
+function _createEndpointObj() {
+  return {
+    name: "",
+    url: "",
+    folder: "",
+    headers: {},
+    calls: [],
+  };
+}
+
 function onSuccesCallWriteData(response, call) {
   const fsExtra = require("fs-extra");
   const stringedDataPrettified = JSON.stringify(
@@ -26,30 +51,29 @@ function onSuccesCallWriteData(response, call) {
 }
 
 function createEndpoint(data, calls) {
-  const newEndpoint = {
-    name: data.name,
-    url: data.url,
-    folder: data.folder,
-    headers: data.headers || {},
-    calls: [],
-  };
+  const newEndpoint = _createEndpointObj();
+
+  newEndpoint.name = data.name;
+  newEndpoint.url = data.url;
+  newEndpoint.folder = data.folder;
+  newEndpoint.headers = data.headers;
 
   const cals = calls?.length ? calls : [];
 
   cals.forEach((call) => {
-    newEndpoint.calls.push({
-      endPoint: data.url + (call.endPoint || ""),
-      data: call.data || {},
-      params: call.params || {},
-      method: call.method || "get",
-      onSucces: {
-        create: {
-          newFileName:
-            `${data.folder}/${data.name}/${_getFilename(call)}.json` || "",
-        },
-        usePath: call.usePath ? "data." + call.usePath : "data",
-      },
-    });
+    const endPointCall = _createEndpointCallObj();
+
+    endPointCall.endPoint = data.url + (call.endPoint || "");
+    endPointCall.data = call.data;
+    endPointCall.params = call.params;
+    endPointCall.method = call.method;
+    endPointCall.onSucces.create.newFileName =
+      `${data.folder}/${data.name}/${_getFilename(call)}.json` || "";
+    endPointCall.onSucces.usePath = call.usePath
+      ? "data." + call.usePath
+      : "data";
+
+    newEndpoint.calls.push(endPointCall);
   });
 
   return newEndpoint;
@@ -68,13 +92,13 @@ function getDataInPath(obj, path, separator = ".") {
 
 function createNewConfig() {
   return {
-    headers: {}
-  }
+    headers: {},
+  };
 }
 
 module.exports = {
   createEndpoint,
   getDataInPath,
   onSuccesCallWriteData,
-  createNewConfig
+  createNewConfig,
 };
