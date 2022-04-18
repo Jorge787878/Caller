@@ -1,0 +1,16 @@
+{
+  "name": "caller",
+  "version": "1.1.2",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "init": "node ./index.js",
+    "test": "node ./test.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.26.1",
+    "fs-extra": "^10.1.0"
+  }
+}
