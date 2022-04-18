@@ -11,19 +11,19 @@ const endpoints = [
       {
         method: "get",
         newFileName: "abilities",
-        usePath: "data.abilities",
+        usePath: "abilities",
       },
       {
-        usePath: "data.types",
+        usePath: "types",
       },
       {
-        usePath: "data.pokemon_species",
+        usePath: "pokemon_species",
       },
       {
-        usePath: "data.names",
+        usePath: "names",
       },
       {
-        usePath: "data.moves",
+        usePath: "moves",
       },
     ]
   ),

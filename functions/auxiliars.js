@@ -1,9 +1,13 @@
 function _getFilename(call) {
-  if (call.usePath) {
+  if (call.newFileName) {
+    return call.newFileName;
+  } else if (call.usePath && call.usePath !== "data") {
     const segments = call.usePath.split(".");
     return segments[(segments.length || 1) - 1];
+  } else if (call.endPoint) {
+    const endPointsSegments = call.endPoint.split("/");
+    return endPointsSegments[(endPointsSegments.length || 1) - 1];
   }
-  return call.newFileName;
 }
 
 function onSuccesCallWriteData(response, call) {
@@ -15,7 +19,10 @@ function onSuccesCallWriteData(response, call) {
   );
 
   fsExtra.createFileSync(call.onSucces.create.newFileName);
-  fsExtra.writeFileSync(call.onSucces.create.newFileName, stringedDataPrettified);
+  fsExtra.writeFileSync(
+    call.onSucces.create.newFileName,
+    stringedDataPrettified
+  );
 }
 
 function createEndpoint(data, calls) {
@@ -23,6 +30,7 @@ function createEndpoint(data, calls) {
     name: data.name,
     url: data.url,
     folder: data.folder,
+    headers: data.headers || {},
     calls: [],
   };
 
@@ -30,15 +38,16 @@ function createEndpoint(data, calls) {
 
   cals.forEach((call) => {
     newEndpoint.calls.push({
-      endPoint: call.endPoint ? `${data.url}/${call.endPoint}` : data.url,
+      endPoint: data.url + (call.endPoint || ""),
       data: call.data || {},
       params: call.params || {},
       method: call.method || "get",
       onSucces: {
         create: {
-          newFileName: `${data.folder}/${data.name}/${_getFilename(call)}.json` || "",
+          newFileName:
+            `${data.folder}/${data.name}/${_getFilename(call)}.json` || "",
         },
-        usePath: call.usePath || "",
+        usePath: call.usePath ? "data." + call.usePath : "data",
       },
     });
   });

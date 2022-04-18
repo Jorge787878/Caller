@@ -1,18 +1,47 @@
-const obj = {
-  data: {
-    results: [{ num: 1 }, { num: 2 }, { num: 3 }],
-  },
+const core = require("./functions/core");
+const aux = require("./functions/auxiliars");
+
+const headers = {
+  "ocp-apim-subscription-key": "311f4b451bf94524acb13b44b6bdbef8",
 };
 
-function getDataInPath(obj, path) {
-  segments = path.split(".");
-  currentData = obj;
+const endpoints = [
+  aux.createEndpoint(
+    {
+      name: "support",
+      url: "https://dev-api.iryo.eu/b2c/support",
+      headers,
+      folder: "./results",
+    },
+    [
+      {
+        method: "get",
+        endPoint: "/countries",
+        newFileName: "countries-data",
+        usePath: "data",
+      },
+      {
+        endPoint: "/countries",
+        newFileName: "countries",
+      },
+      {
+        endPoint: "/provinces",
+      },
+      {
+        endPoint: "/product-families",
+      },
+      {
+        endPoint: "/product-types",
+      },
+      {
+        endPoint: "/sales-presentations",
+      },
+    ]
+  ),
+];
 
-  segments.forEach((segment) => {
-    currentData = currentData[segment];
-  });
-
-  return currentData;
+function init() {
+  core.callToEndPoints(endpoints);
 }
 
-console.log(getDataInPath(obj, "data.results"));
+init();
