@@ -4,7 +4,7 @@ const obj = {
   },
 };
 
-function getPath(obj, path) {
+function getDataInPath(obj, path) {
   segments = path.split(".");
   currentData = obj;
 
@@ -15,4 +15,4 @@ function getPath(obj, path) {
   return currentData;
 }
 
-console.log(getPath(obj, "data.results"));
+console.log(getDataInPath(obj, "data.results"));

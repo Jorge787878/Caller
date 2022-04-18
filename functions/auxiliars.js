@@ -6,6 +6,24 @@ function _getFilename(call) {
   return call.file;
 }
 
+function onFailCall(params, call) {
+  console.error(
+    `Error: ${params.name} ${call.endPoint ? call.endPoint : params.url}`
+  );
+}
+
+function onSuccesCallWriteData(response, call) {
+  const fsExtra = require("fs-extra");
+  const stringedDataPrettified = JSON.stringify(
+    getDataInPath(response, call.onSucces.usePath, "."),
+    null,
+    2
+  );
+
+  fsExtra.createFileSync(call.onSucces.create.file);
+  fsExtra.writeFileSync(call.onSucces.create.file, stringedDataPrettified);
+}
+
 function createEndpoint(name, url, folder, calls) {
   const newEndpoint = {
     name,
@@ -18,10 +36,11 @@ function createEndpoint(name, url, folder, calls) {
 
   cals.forEach((call) => {
     newEndpoint.calls.push({
-      endPoint: call.endPoint ? `${url}/${call.endPoint}` : "",
+      endPoint: call.endPoint ? `${url}/${call.endPoint}` : url,
+      data: call.data || {},
       params: call.params || {},
       method: call.method || "get",
-      onThen: {
+      onSucces: {
         create: {
           file: `${folder}/${name}/${_getFilename(call)}.json` || "",
         },
@@ -33,7 +52,7 @@ function createEndpoint(name, url, folder, calls) {
   return newEndpoint;
 }
 
-function getPath(obj, path, separator = ".") {
+function getDataInPath(obj, path, separator = ".") {
   segments = path.split(separator);
   currentData = obj;
 
@@ -46,5 +65,6 @@ function getPath(obj, path, separator = ".") {
 
 module.exports = {
   createEndpoint,
-  getPath,
+  getDataInPath,
+  onSuccesCallWriteData,
 };
