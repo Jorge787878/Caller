@@ -3,7 +3,7 @@ function _getFilename(call) {
     const segments = call.usePath.split(".");
     return segments[(segments.length || 1) - 1];
   }
-  return call.file;
+  return call.newFileName;
 }
 
 function onSuccesCallWriteData(response, call) {
@@ -14,8 +14,8 @@ function onSuccesCallWriteData(response, call) {
     2
   );
 
-  fsExtra.createFileSync(call.onSucces.create.file);
-  fsExtra.writeFileSync(call.onSucces.create.file, stringedDataPrettified);
+  fsExtra.createFileSync(call.onSucces.create.newFileName);
+  fsExtra.writeFileSync(call.onSucces.create.newFileName, stringedDataPrettified);
 }
 
 function createEndpoint(data, calls) {
@@ -36,7 +36,7 @@ function createEndpoint(data, calls) {
       method: call.method || "get",
       onSucces: {
         create: {
-          file: `${data.folder}/${data.name}/${_getFilename(call)}.json` || "",
+          newFileName: `${data.folder}/${data.name}/${_getFilename(call)}.json` || "",
         },
         usePath: call.usePath || "",
       },

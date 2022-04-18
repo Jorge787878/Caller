@@ -10,7 +10,7 @@ const endpoints = [
     [
       {
         method: "get",
-        file: "abilities",
+        newFileName: "abilities",
         usePath: "data.abilities",
       },
       {
