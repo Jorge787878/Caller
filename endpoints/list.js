@@ -2,9 +2,11 @@ const auxFn = require("../functions/auxiliars");
 
 const endpoints = [
   auxFn.createEndpoint(
-    "pokemons",
-    "https://pokeapi.co/api/v2/generation/3",
-    "./results",
+    {
+      name: "pokemons",
+      url: "https://pokeapi.co/api/v2/generation/3",
+      folder: "./results",
+    },
     [
       {
         method: "get",

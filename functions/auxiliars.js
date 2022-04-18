@@ -6,12 +6,6 @@ function _getFilename(call) {
   return call.file;
 }
 
-function onFailCall(params, call) {
-  console.error(
-    `Error: ${params.name} ${call.endPoint ? call.endPoint : params.url}`
-  );
-}
-
 function onSuccesCallWriteData(response, call) {
   const fsExtra = require("fs-extra");
   const stringedDataPrettified = JSON.stringify(
@@ -24,11 +18,11 @@ function onSuccesCallWriteData(response, call) {
   fsExtra.writeFileSync(call.onSucces.create.file, stringedDataPrettified);
 }
 
-function createEndpoint(name, url, folder, calls) {
+function createEndpoint(data, calls) {
   const newEndpoint = {
-    name,
-    url,
-    folder,
+    name: data.name,
+    url: data.url,
+    folder: data.folder,
     calls: [],
   };
 
@@ -36,13 +30,13 @@ function createEndpoint(name, url, folder, calls) {
 
   cals.forEach((call) => {
     newEndpoint.calls.push({
-      endPoint: call.endPoint ? `${url}/${call.endPoint}` : url,
+      endPoint: call.endPoint ? `${data.url}/${call.endPoint}` : data.url,
       data: call.data || {},
       params: call.params || {},
       method: call.method || "get",
       onSucces: {
         create: {
-          file: `${folder}/${name}/${_getFilename(call)}.json` || "",
+          file: `${data.folder}/${data.name}/${_getFilename(call)}.json` || "",
         },
         usePath: call.usePath || "",
       },
