@@ -7,21 +7,20 @@ function callToEndPoint(params, config) {
     fsExtra.mkdirSync(params.folder);
   }
 
+  params.headers = config.headers;
+
   params.calls.forEach((call) => {
     const targetFolder = `${params.folder}/${params.name}`;
 
     fsExtra.removeSync(targetFolder);
     fsExtra.mkdirSync(targetFolder);
 
-    params.url = call.endPoint;
-    params.headers = config.headers;
-
-    axios(params)
+    axios(call.endPoint, params)
       .then((response) => {
         aux.onSuccesCallWriteData(response, call);
       })
-      .catch(() => {
-        console.error(`Error: ${params.name} ${call.endPoint}`);
+      .catch((error) => {
+        console.error(`Error: ${params.name} ${call.endPoint}`, error);
       });
   });
 }
@@ -33,5 +32,5 @@ function callToEndPoints(endpoints, config) {
 }
 
 module.exports = {
-  callToEndPoints
+  callToEndPoints,
 };

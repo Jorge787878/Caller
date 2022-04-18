@@ -1,5 +1,5 @@
 const endpointsPokemons = require("../endpoints/pokemons");
-const endpointsB2cSupport = require("../endpoints/b2c-support");
+const endpointsB2cSupport = require("../endpoints/b2c");
 
 const core = require("./core");
 const aux = require("./auxiliars");
@@ -15,7 +15,7 @@ function callsB2c() {
 
 function callsPokemons() {
   const config = aux.createNewConfig();
-  
+
   core.callToEndPoints(endpointsPokemons, config);
 }
 

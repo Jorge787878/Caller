@@ -10,7 +10,7 @@ function _getFilename(call) {
   }
 }
 
-function _createEndpointCallObj() {
+function createEndpointCallObj() {
   return {
     endPoint: "",
     data: {},
@@ -25,7 +25,7 @@ function _createEndpointCallObj() {
   };
 }
 
-function _createEndpointObj() {
+function createEndpointObj() {
   return {
     name: "",
     url: "",
@@ -50,33 +50,15 @@ function onSuccesCallWriteData(response, call) {
   );
 }
 
-function createEndpoint(data, calls) {
-  const newEndpoint = _createEndpointObj();
-
-  newEndpoint.name = data.name;
-  newEndpoint.url = data.url;
-  newEndpoint.folder = data.folder;
-  newEndpoint.headers = data.headers;
-
-  const cals = calls?.length ? calls : [];
-
-  cals.forEach((call) => {
-    const endPointCall = _createEndpointCallObj();
-
-    endPointCall.endPoint = data.url + (call.endPoint || "");
-    endPointCall.data = call.data;
-    endPointCall.params = call.params;
-    endPointCall.method = call.method;
-    endPointCall.onSucces.create.newFileName =
+function prepareEndpoint(data) {
+  data.calls.forEach((call) => {
+    call.endPoint = data.url + (call.endPoint || "");
+    call.onSucces.create.newFileName =
       `${data.folder}/${data.name}/${_getFilename(call)}.json` || "";
-    endPointCall.onSucces.usePath = call.usePath
-      ? "data." + call.usePath
-      : "data";
-
-    newEndpoint.calls.push(endPointCall);
+    call.onSucces.usePath = call.usePath ? "data." + call.usePath : "data";
   });
 
-  return newEndpoint;
+  return data;
 }
 
 function getDataInPath(obj, path, separator = ".") {
@@ -97,8 +79,10 @@ function createNewConfig() {
 }
 
 module.exports = {
-  createEndpoint,
+  prepareEndpoint,
   getDataInPath,
   onSuccesCallWriteData,
   createNewConfig,
+  createEndpointCallObj,
+  createEndpointObj,
 };
