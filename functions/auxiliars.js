@@ -154,15 +154,13 @@ function onSuccesCallWriteData(response, call) {
   );
 }
 
-function prepareEndpoint(data) {
+function prepareEndpointCalls(data) {
   data.calls.forEach((call) => {
     call.endPoint = data.url + (call.endPoint || "");
     call.onSucces.create.newFileName =
       `${data.folder}/${data.name}/${_getFilename(call)}.json` || "";
     call.onSucces.usePath = call.usePath ? "data." + call.usePath : "data";
   });
-
-  return data;
 }
 
 function getDataInPath(obj, path, separator = ".") {
@@ -183,7 +181,7 @@ function createNewConfig() {
 }
 
 module.exports = {
-  prepareEndpoint,
+  prepareEndpointCalls,
   getDataInPath,
   onSuccesCallWriteData,
   createNewConfig,

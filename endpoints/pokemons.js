@@ -36,6 +36,8 @@ endpointsPokemons.calls.push(
   pokemonSpecies
 );
 
-const endpoints = [aux.prepareEndpoint(endpointsPokemons)];
+aux.prepareEndpointCalls(endpointsPokemons);
+
+const endpoints = [endpointsPokemons];
 
 module.exports = endpoints;

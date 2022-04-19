@@ -33,6 +33,8 @@ endpointB2cSupport.calls.push(
   salesPresentation
 );
 
-const endpoints = [aux.prepareEndpoint(endpointB2cSupport)];
+aux.prepareEndpointCalls(endpointB2cSupport);
+
+const endpoints = [endpointB2cSupport];
 
 module.exports = endpoints;
