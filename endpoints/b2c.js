@@ -40,8 +40,6 @@ endpointB2cSupport.calls.push(
   salesPresentation
 );
 
-aux.prepareEndpointCalls(endpointB2cSupport);
-
 endpoints.push(endpointB2cSupport);
 
 /* ===================================================================
@@ -80,8 +78,6 @@ search.body = {
 
 endpointB2cAvailability.calls.push(search);
 
-aux.prepareEndpointCalls(endpointB2cAvailability);
-
 endpoints.push(endpointB2cAvailability);
 
 /* ===================================================================
@@ -101,8 +97,6 @@ sendTickets.method = "get";
 sendTickets.endPoint = "/customer-rules";
 
 endpointB2cBuild.calls.push(sendTickets);
-
-aux.prepareEndpointCalls(endpointB2cBuild);
 
 endpoints.push(endpointB2cBuild);
 

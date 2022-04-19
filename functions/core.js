@@ -30,7 +30,7 @@ function callToEndPoint(preparedEndPoint, config) {
 
 function callToEndPoints(endpoints, config) {
   endpoints.forEach((endpoint) => {
-    // aux.prepareEndpointCalls(endpoint);
+    aux.prepareEndpointCalls(endpoint);
     callToEndPoint(endpoint, config);
   });
 }
