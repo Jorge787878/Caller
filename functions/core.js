@@ -18,9 +18,10 @@ function callToEndPoint(params, config) {
     axios(call.endPoint, params)
       .then((response) => {
         aux.onSuccesCallWriteData(response, call);
+        aux.coLog().stateSuccess(`${params.name} ${call.endPoint}`);
       })
       .catch((error) => {
-        console.error(`Error: ${params.name} ${call.endPoint}`, error);
+        aux.coLog().stateFail(`${params.name} ${call.endPoint}`);
       });
   });
 }
