@@ -1,3 +1,5 @@
+const constantsGlobal = require("../constants/constants-global");
+
 function _getFilename(call) {
   if (call.newFileName) {
     return call.newFileName;
@@ -15,7 +17,7 @@ function createEndpointCallObj() {
     endPoint: "",
     body: {},
     params: {},
-    method: "get",
+    method: constantsGlobal.METHODS.GET,
     onSucces: {
       create: {
         newFileName: "",
@@ -195,7 +197,7 @@ function createAxiosParam() {
     method: {},
     headers: {},
     data: {},
-    url: "get",
+    url: constantsGlobal.METHODS.GET,
   };
 }
 

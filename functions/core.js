@@ -1,6 +1,7 @@
 const axios = require("axios");
 const fsExtra = require("fs-extra");
 const aux = require("../functions/auxiliars");
+const globalConfig = require("../config/global");
 
 function callToEndPoint(preparedEndPoint, config) {
   if (!fsExtra.existsSync(preparedEndPoint.folder)) {
@@ -10,12 +11,19 @@ function callToEndPoint(preparedEndPoint, config) {
   preparedEndPoint.calls.forEach((call) => {
     const targetFolder = `${preparedEndPoint.folder}/${preparedEndPoint.name}`;
 
-    fsExtra.removeSync(targetFolder);
-    fsExtra.mkdirSync(targetFolder);
+    if (
+      fsExtra.existsSync(targetFolder) &&
+      globalConfig.deleteFilesBeforeCall
+    ) {
+      fsExtra.removeSync(targetFolder);
+    }
+    if (!fsExtra.existsSync(targetFolder)) {
+      fsExtra.mkdirSync(targetFolder);
+    }
 
     const axiosParam = aux.toAxiosParam(call, config.headers);
-    if (axiosParam.url.includes('build')) {
-      delete axiosParam.data
+    if (axiosParam.url.includes("build")) {
+      delete axiosParam.data;
     }
     axios(axiosParam)
       .then((response) => {
