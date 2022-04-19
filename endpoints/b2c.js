@@ -84,4 +84,30 @@ aux.prepareEndpointCalls(endpointB2cAvailability);
 
 endpoints.push(endpointB2cAvailability);
 
+/* ===================================================================
+    B2C BUILD
+  =================================================================== */
+
+const endpointB2cBuild = aux.createEndpointObj();
+
+endpointB2cBuild.name = "build";
+endpointB2cBuild.url = urlBase + "/build//bookings";
+endpointB2cBuild.folder = "./results";
+
+/* CUSTOMER RULES  */
+
+const sendTickets = aux.createEndpointCallObj();
+sendTickets.method = "get";
+sendTickets.endPoint = "/customer-rules";
+
+endpointB2cBuild.calls.push(sendTickets);
+
+aux.prepareEndpointCalls(endpointB2cBuild);
+
+endpoints.push(endpointB2cBuild);
+
+/* ===================================================================
+    FIN
+  =================================================================== */
+
 module.exports = endpoints;
