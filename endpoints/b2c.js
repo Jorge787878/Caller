@@ -1,9 +1,16 @@
 const aux = require("../functions/auxiliars");
 
+const urlBase = "https://dev-api.iryo.eu/b2c";
+const endpoints = [];
+
+/* ===================================================================
+    B2C SUPPORT
+  =================================================================== */
+
 const endpointB2cSupport = aux.createEndpointObj();
 
 endpointB2cSupport.name = "support";
-endpointB2cSupport.url = "https://dev-api.iryo.eu/b2c/support";
+endpointB2cSupport.url = urlBase + "/support";
 endpointB2cSupport.folder = "./results";
 
 const countriesData = aux.createEndpointCallObj();
@@ -35,6 +42,46 @@ endpointB2cSupport.calls.push(
 
 aux.prepareEndpointCalls(endpointB2cSupport);
 
-const endpoints = [endpointB2cSupport];
+endpoints.push(endpointB2cSupport);
+
+/* ===================================================================
+    B2C AVAILABILITY
+  =================================================================== */
+
+const endpointB2cAvailability = aux.createEndpointObj();
+
+endpointB2cAvailability.name = "availability";
+endpointB2cAvailability.url = urlBase + "/availability";
+endpointB2cAvailability.folder = "./results";
+
+const search = aux.createEndpointCallObj();
+search.method = "post";
+search.endPoint = "/search";
+search.newFileName = "search";
+search.usePath = "";
+search.body = {
+  currency: "EUR",
+  passengers: [{ id: "passenger_1", type: "AD" }],
+  travels: [
+    {
+      origin: "60000",
+      destination: "71801",
+      direction: "outbound",
+      departure: "2022-04-19",
+    },
+    {
+      origin: "71801",
+      destination: "60000",
+      direction: "inbound",
+      departure: "2022-04-19",
+    },
+  ],
+};
+
+endpointB2cAvailability.calls.push(search);
+
+aux.prepareEndpointCalls(endpointB2cAvailability);
+
+endpoints.push(endpointB2cAvailability);
 
 module.exports = endpoints;

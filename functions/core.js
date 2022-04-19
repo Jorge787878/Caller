@@ -2,26 +2,26 @@ const axios = require("axios");
 const fsExtra = require("fs-extra");
 const aux = require("../functions/auxiliars");
 
-function callToEndPoint(params, config) {
-  if (!fsExtra.existsSync(params.folder)) {
-    fsExtra.mkdirSync(params.folder);
+function callToEndPoint(preparedEndPoint, config) {
+  if (!fsExtra.existsSync(preparedEndPoint.folder)) {
+    fsExtra.mkdirSync(preparedEndPoint.folder);
   }
 
-  params.headers = config.headers;
-
-  params.calls.forEach((call) => {
-    const targetFolder = `${params.folder}/${params.name}`;
+  preparedEndPoint.calls.forEach((call) => {
+    const targetFolder = `${preparedEndPoint.folder}/${preparedEndPoint.name}`;
 
     fsExtra.removeSync(targetFolder);
     fsExtra.mkdirSync(targetFolder);
 
-    axios(call.endPoint, params)
+    const axiosParam = aux.toAxiosParam(call, config.headers);
+
+    axios(axiosParam)
       .then((response) => {
         aux.onSuccesCallWriteData(response, call);
-        aux.coLog().stateSuccess(`${params.name} ${call.endPoint}`);
+        aux.coLog().stateSuccess(`${preparedEndPoint.name} ${call.endPoint}`);
       })
       .catch((error) => {
-        aux.coLog().stateFail(`${params.name} ${call.endPoint}`);
+        aux.coLog().stateFail(`${preparedEndPoint.name} ${call.endPoint}`);
       });
   });
 }

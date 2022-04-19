@@ -13,7 +13,7 @@ function _getFilename(call) {
 function createEndpointCallObj() {
   return {
     endPoint: "",
-    data: {},
+    body: {},
     params: {},
     method: "get",
     onSucces: {
@@ -31,8 +31,18 @@ function createEndpointObj() {
     url: "",
     folder: "",
     headers: {},
+    data: {},
     calls: [],
   };
+}
+
+function toAxiosParam(data, headers) {
+  const axiosParam = createAxiosParam();
+  axiosParam.method = data.method;
+  axiosParam.url = data.endPoint;
+  axiosParam.data = data.body;
+  axiosParam.headers = headers;
+  return axiosParam;
 }
 
 function coLog() {
@@ -180,6 +190,15 @@ function createNewConfig() {
   };
 }
 
+function createAxiosParam() {
+  return {
+    method: {},
+    headers: {},
+    data: {},
+    url: "get",
+  };
+}
+
 module.exports = {
   prepareEndpointCalls,
   getDataInPath,
@@ -188,4 +207,6 @@ module.exports = {
   createEndpointCallObj,
   createEndpointObj,
   coLog,
+  createAxiosParam,
+  toAxiosParam,
 };
