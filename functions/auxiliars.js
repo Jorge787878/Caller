@@ -20,8 +20,10 @@ function createEndpointCallObj() {
     endPoint: "",
     body: {},
     params: {},
+    /** Por defecto es "get" */
     method: constantsGlobal.METHODS.GET,
     createNewFileName: "",
+    /** Path usado al recibir la response */
     usePath: "",
   };
 }
@@ -30,6 +32,7 @@ function createEndpointObj() {
   return {
     name: "",
     url: "",
+    /** Se creara dentro de la carpeta... */
     folder: "",
     headers: {},
     data: {},
