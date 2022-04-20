@@ -143,7 +143,10 @@ function coLog() {
       colors.Reset();
     },
     stateSuccess: (msg) => {
-      colors.FgGreen("✔ " + msg);
+      colors.FgGreen("✔  " + msg);
+    },
+    stateWarning: (msg) => {
+      colors.FgYellow("⚠  " + msg);
     },
     stateFail: (msg) => {
       colors.FgRed("💥 " + msg);

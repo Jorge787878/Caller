@@ -9,7 +9,6 @@ function callToEndPoint(preparedEndPoint) {
   }
 
   preparedEndPoint.calls.forEach((call) => {
-
     if (
       fsExtra.existsSync(call.targetFolder) &&
       globalConfig.deleteFilesBeforeCall
@@ -22,8 +21,22 @@ function callToEndPoint(preparedEndPoint) {
 
     axios(call.axiosParam)
       .then((response) => {
+        const callData = call.usePath ? response[call.usePath] : response;
+        let hasData = true;
+        if (Array.isArray(callData) && Array.isArray(callData)?.length <= 0) {
+          hasData = false;
+        } else if (
+          typeof callData === "object" &&
+          Object.keys(callData)?.length <= 0
+        ) {
+          hasData = false;
+        }
         aux.onSuccesCallWriteData(response, call);
-        aux.coLog().stateSuccess(`${preparedEndPoint.name} ${call.endPoint}`);
+        aux
+          .coLog()
+          [hasData ? "stateSuccess" : "stateWarning"](
+            `${preparedEndPoint.name} ${call.endPoint}`
+          );
       })
       .catch((error) => {
         aux.coLog().stateFail(`${preparedEndPoint.name} ${call.endPoint}`);
