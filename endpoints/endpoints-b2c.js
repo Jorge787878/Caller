@@ -13,7 +13,7 @@ const endpointB2cSupport = aux.createEndpointObj();
 const callCountries = aux.createEndpointCallObj();
 callCountries.method = "get";
 callCountries.endPoint = "/countries";
-callCountries.newFileName = "countries";
+callCountries.createNewFileName = "countries";
 callCountries.usePath = "";
 
 endpointB2cSupport.name = "support";
@@ -24,7 +24,7 @@ endpointB2cSupport.calls = [
   {
     method: "get",
     endPoint: "/countries",
-    newFileName: "countries-data",
+    createNewFileName: "countries-data",
     usePath: "data",
   },
   {
@@ -53,7 +53,7 @@ endpointB2cAvailability.folder = "./results";
 const search = aux.createEndpointCallObj();
 search.method = "post";
 search.endPoint = "/search";
-search.newFileName = "search";
+search.createNewFileName = "search";
 search.usePath = "";
 search.body = {
   currency: "EUR",
@@ -91,7 +91,6 @@ endpointB2cBuild.folder = "./results";
 /* CUSTOMER RULES  */
 
 const customerRules = aux.createEndpointCallObj();
-customerRules.method = "get";
 customerRules.endPoint = "/customer-rules";
 
 endpointB2cBuild.calls.push(customerRules);
@@ -99,7 +98,6 @@ endpointB2cBuild.calls.push(customerRules);
 /* PASSENGER RULES  */
 
 const passengerRules = aux.createEndpointCallObj();
-passengerRules.method = "get";
 passengerRules.endPoint = "/passenger-rules";
 
 endpointB2cBuild.calls.push(passengerRules);

@@ -22,9 +22,6 @@ function callToEndPoint(preparedEndPoint, config) {
     }
 
     const axiosParam = aux.toAxiosParam(call, config.headers);
-    if (axiosParam.url.includes("build")) {
-      delete axiosParam.data;
-    }
     axios(axiosParam)
       .then((response) => {
         aux.onSuccesCallWriteData(response, call);

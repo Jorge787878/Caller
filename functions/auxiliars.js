@@ -1,8 +1,10 @@
 const constantsGlobal = require("../constants/constants-global");
+const fsExtra = require("fs-extra");
+
 
 function _getFilename(call) {
-  if (call.newFileName) {
-    return call.newFileName;
+  if (call.createNewFileName) {
+    return call.createNewFileName;
   } else if (call.usePath && call.usePath !== "data") {
     const segments = call.usePath.split(".");
     return segments[(segments.length || 1) - 1];
@@ -14,14 +16,13 @@ function _getFilename(call) {
 
 function createEndpointCallObj() {
   return {
+    /** required */
     endPoint: "",
     body: {},
     params: {},
     method: constantsGlobal.METHODS.GET,
-    create: {
-      newFileName: "",
-    },
-    usePath: "data",
+    createNewFileName: "",
+    usePath: "",
   };
 }
 
@@ -150,16 +151,15 @@ function coLog() {
 }
 
 function onSuccesCallWriteData(response, call) {
-  const fsExtra = require("fs-extra");
   const stringedDataPrettified = JSON.stringify(
     getDataInPath(response, call.usePath, "."),
     null,
     2
   );
 
-  fsExtra.createFileSync(call.create.newFileName);
+  fsExtra.createFileSync(call.createNewFileName);
   fsExtra.writeFileSync(
-    call.create.newFileName,
+    call.createNewFileName,
     stringedDataPrettified
   );
 }
@@ -167,7 +167,7 @@ function onSuccesCallWriteData(response, call) {
 function prepareEndpointCalls(data) {
   data.calls.forEach((call) => {
     call.endPoint = data.url + (call.endPoint || "");
-    call.create.newFileName =
+    call.createNewFileName =
       `${data.folder}/${data.name}/${_getFilename(call)}.json` || "";
     call.usePath = call.usePath ? "data." + call.usePath : "data";
   });
@@ -192,10 +192,10 @@ function createNewConfig() {
 
 function createAxiosParam() {
   return {
-    method: {},
+    method: constantsGlobal.METHODS.GET,
     headers: {},
     data: {},
-    url: constantsGlobal.METHODS.GET,
+    url: "",
   };
 }
 

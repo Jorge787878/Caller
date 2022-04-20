@@ -8,11 +8,11 @@ endpointsPokemons.folder = "./results";
 
 const abilitiesData = aux.createEndpointCallObj();
 abilitiesData.method = "get";
-abilitiesData.newFileName = "abilities-data";
+abilitiesData.createNewFileName = "abilities-data";
 abilitiesData.usePath = "abilities";
 
 const abilities = aux.createEndpointCallObj();
-abilities.newFileName = "abilities";
+abilities.createNewFileName = "abilities";
 abilitiesData.usePath = "abilities";
 
 const types = aux.createEndpointCallObj();
