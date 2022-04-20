@@ -3,26 +3,24 @@ const fsExtra = require("fs-extra");
 const aux = require("../functions/auxiliars");
 const globalConfig = require("../config/global");
 
-function callToEndPoint(preparedEndPoint, config) {
+function callToEndPoint(preparedEndPoint) {
   if (!fsExtra.existsSync(preparedEndPoint.folder)) {
     fsExtra.mkdirSync(preparedEndPoint.folder);
   }
 
   preparedEndPoint.calls.forEach((call) => {
-    const targetFolder = `${preparedEndPoint.folder}/${preparedEndPoint.name}`;
 
     if (
-      fsExtra.existsSync(targetFolder) &&
+      fsExtra.existsSync(call.targetFolder) &&
       globalConfig.deleteFilesBeforeCall
     ) {
-      fsExtra.removeSync(targetFolder);
+      fsExtra.removeSync(call.targetFolder);
     }
-    if (!fsExtra.existsSync(targetFolder)) {
-      fsExtra.mkdirSync(targetFolder);
+    if (!fsExtra.existsSync(call.targetFolder)) {
+      fsExtra.mkdirSync(call.targetFolder);
     }
 
-    const axiosParam = aux.toAxiosParam(call, config.headers);
-    axios(axiosParam)
+    axios(call.axiosParam)
       .then((response) => {
         aux.onSuccesCallWriteData(response, call);
         aux.coLog().stateSuccess(`${preparedEndPoint.name} ${call.endPoint}`);
@@ -35,7 +33,7 @@ function callToEndPoint(preparedEndPoint, config) {
 
 function callToEndPoints(endpoints, config) {
   endpoints.forEach((endpoint) => {
-    aux.prepareEndpointCalls(endpoint);
+    aux.prepareEndpointCalls(endpoint, config.headers);
     callToEndPoint(endpoint, config);
   });
 }

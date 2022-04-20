@@ -1,7 +1,6 @@
 const constantsGlobal = require("../constants/constants-global");
 const fsExtra = require("fs-extra");
 
-
 function _getFilename(call) {
   if (call.createNewFileName) {
     return call.createNewFileName;
@@ -161,18 +160,17 @@ function onSuccesCallWriteData(response, call) {
   );
 
   fsExtra.createFileSync(call.createNewFileName);
-  fsExtra.writeFileSync(
-    call.createNewFileName,
-    stringedDataPrettified
-  );
+  fsExtra.writeFileSync(call.createNewFileName, stringedDataPrettified);
 }
 
-function prepareEndpointCalls(data) {
+function prepareEndpointCalls(data, headers) {
   data.calls.forEach((call) => {
     call.endPoint = data.url + (call.endPoint || "");
     call.createNewFileName =
       `${data.folder}/${data.name}/${_getFilename(call)}.json` || "";
     call.usePath = call.usePath ? "data." + call.usePath : "data";
+    call.axiosParam = toAxiosParam(call, headers);
+    call.targetFolder = `${data.folder}/${data.name}`;
   });
 }
 
