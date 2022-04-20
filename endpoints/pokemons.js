@@ -1,41 +1,32 @@
-const aux = require("../functions/auxiliars");
+const endpointsPokemons = [
+  {
+    name: "pokemons",
+    url: "https://pokeapi.co/api/v2/generation/3",
+    folder: "./results",
+    calls: [
+      {
+        method: "get",
+        createNewFileName: "abilities-data",
+        usePath: "abilities",
+      },
+      {
+        createNewFileName: "abilities",
+        usePath: "abilities",
+      },
+      {
+        usePath: "types",
+      },
+      {
+        usePath: "names",
+      },
+      {
+        usePath: "moves",
+      },
+      {
+        usePath: "pokemon_species",
+      },
+    ],
+  },
+];
 
-const endpointsPokemons = aux.createEndpointObj();
-
-endpointsPokemons.name = "pokemons";
-endpointsPokemons.url = "https://pokeapi.co/api/v2/generation/3";
-endpointsPokemons.folder = "./results";
-
-const abilitiesData = aux.createEndpointCallObj();
-abilitiesData.method = "get";
-abilitiesData.createNewFileName = "abilities-data";
-abilitiesData.usePath = "abilities";
-
-const abilities = aux.createEndpointCallObj();
-abilities.createNewFileName = "abilities";
-abilitiesData.usePath = "abilities";
-
-const types = aux.createEndpointCallObj();
-types.usePath = "types";
-
-const names = aux.createEndpointCallObj();
-names.usePath = "names";
-
-const moves = aux.createEndpointCallObj();
-moves.usePath = "moves";
-
-const pokemonSpecies = aux.createEndpointCallObj();
-pokemonSpecies.usePath = "pokemon_species";
-
-endpointsPokemons.calls.push(
-  abilitiesData,
-  abilities,
-  types,
-  names,
-  moves,
-  pokemonSpecies
-);
-
-const endpoints = [endpointsPokemons];
-
-module.exports = endpoints;
+module.exports = endpointsPokemons;

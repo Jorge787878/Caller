@@ -38,74 +38,68 @@ endpointB2cSupport.calls = [
   },
 ];
 
+endpoints.push(endpointB2cSupport);
+
 /* ===================================================================
     B2C AVAILABILITY
   =================================================================== */
 
-const endpointB2cAvailability = aux.createEndpointObj();
-
-endpointB2cAvailability.name = "availability";
-endpointB2cAvailability.url = urlBase + "/availability";
-endpointB2cAvailability.folder = "./results";
-
-/* SEARCH  */
-
-const search = aux.createEndpointCallObj();
-search.method = "post";
-search.endPoint = "/search";
-search.createNewFileName = "search";
-search.usePath = "";
-search.body = {
-  currency: "EUR",
-  passengers: [{ id: "passenger_1", type: "AD" }],
-  travels: [
+const endpointB2cAvailability = {
+  name: "availability",
+  url: urlBase + "/availability",
+  folder: "./results",
+  calls: [
     {
-      origin: "60000",
-      destination: "71801",
-      direction: "outbound",
-      departure: "2022-04-19",
-    },
-    {
-      origin: "71801",
-      destination: "60000",
-      direction: "inbound",
-      departure: "2022-04-19",
+      method: "post",
+      endPoint: "/search",
+      createNewFileName: "search",
+      usePath: "",
+      body: {
+        currency: "EUR",
+        passengers: [{ id: "passenger_1", type: "AD" }],
+        travels: [
+          {
+            origin: "60000",
+            destination: "71801",
+            direction: "outbound",
+            departure: "2022-04-19",
+          },
+          {
+            origin: "71801",
+            destination: "60000",
+            direction: "inbound",
+            departure: "2022-04-19",
+          },
+        ],
+      },
     },
   ],
 };
 
-endpointB2cAvailability.calls.push(search);
-
 endpoints.push(endpointB2cAvailability);
 
 /* ===================================================================
-    B2C BUILD
-  =================================================================== */
+B2C BUILD
+=================================================================== */
 
-const endpointB2cBuild = aux.createEndpointObj();
-
-endpointB2cBuild.name = "build";
-endpointB2cBuild.url = urlBase + "/build//bookings";
-endpointB2cBuild.folder = "./results";
-
-/* CUSTOMER RULES  */
-
-const customerRules = aux.createEndpointCallObj();
-customerRules.endPoint = "/customer-rules";
-
-endpointB2cBuild.calls.push(customerRules);
-
-/* PASSENGER RULES  */
-
-const passengerRules = aux.createEndpointCallObj();
-passengerRules.endPoint = "/passenger-rules";
-
-endpointB2cBuild.calls.push(passengerRules);
+const endpointB2cBuild = {
+  name: "build",
+  url: urlBase + "/build//bookings",
+  folder: "./results",
+  calls: [
+    {
+      endPoint: "/customer-rules",
+    },
+    {
+      endPoint: "/passenger-rules",
+    },
+  ],
+};
 
 endpoints.push(endpointB2cBuild);
 
 /* ===================================================================
-    FIN
+  FIN
   =================================================================== */
 
 module.exports = endpoints;
