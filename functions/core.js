@@ -21,16 +21,9 @@ function callToEndPoint(preparedEndPoint) {
 
     axios(call.axiosParam)
       .then((response) => {
-        const callData = call.usePath ? response[call.usePath] : response;
-        let hasData = true;
-        if (Array.isArray(callData) && Array.isArray(callData)?.length <= 0) {
-          hasData = false;
-        } else if (
-          typeof callData === "object" &&
-          Object.keys(callData)?.length <= 0
-        ) {
-          hasData = false;
-        }
+        const callData = aux.getDataInPath(response, call.usePath);
+        const hasData = aux.checkObjItsFilled(callData);
+
         aux.onSuccesCallWriteData(response, call);
         aux
           .coLog()
