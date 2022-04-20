@@ -18,12 +18,10 @@ function createEndpointCallObj() {
     body: {},
     params: {},
     method: constantsGlobal.METHODS.GET,
-    onSucces: {
-      create: {
-        newFileName: "",
-      },
-      usePath: "data",
+    create: {
+      newFileName: "",
     },
+    usePath: "data",
   };
 }
 
@@ -154,14 +152,14 @@ function coLog() {
 function onSuccesCallWriteData(response, call) {
   const fsExtra = require("fs-extra");
   const stringedDataPrettified = JSON.stringify(
-    getDataInPath(response, call.onSucces.usePath, "."),
+    getDataInPath(response, call.usePath, "."),
     null,
     2
   );
 
-  fsExtra.createFileSync(call.onSucces.create.newFileName);
+  fsExtra.createFileSync(call.create.newFileName);
   fsExtra.writeFileSync(
-    call.onSucces.create.newFileName,
+    call.create.newFileName,
     stringedDataPrettified
   );
 }
@@ -169,9 +167,9 @@ function onSuccesCallWriteData(response, call) {
 function prepareEndpointCalls(data) {
   data.calls.forEach((call) => {
     call.endPoint = data.url + (call.endPoint || "");
-    call.onSucces.create.newFileName =
+    call.create.newFileName =
       `${data.folder}/${data.name}/${_getFilename(call)}.json` || "";
-    call.onSucces.usePath = call.usePath ? "data." + call.usePath : "data";
+    call.usePath = call.usePath ? "data." + call.usePath : "data";
   });
 }
 

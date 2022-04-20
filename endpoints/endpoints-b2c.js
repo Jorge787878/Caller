@@ -10,48 +10,33 @@ const endpoints = [];
 
 const endpointB2cSupport = aux.createEndpointObj();
 
+const callCountries = aux.createEndpointCallObj();
+callCountries.method = "get";
+callCountries.endPoint = "/countries";
+callCountries.newFileName = "countries";
+callCountries.usePath = "";
+
 endpointB2cSupport.name = "support";
 endpointB2cSupport.url = urlBase + "/support";
 endpointB2cSupport.folder = "./results";
-
-/* COUNTRIES DATA */
-
-const countriesData = aux.createEndpointCallObj();
-countriesData.method = "get";
-countriesData.endPoint = "/countries";
-countriesData.newFileName = "countries-data";
-countriesData.usePath = "data";
-
-/* COUNTRIES */
-
-const countries = aux.createEndpointCallObj();
-countries.endPoint = "/countries";
-countries.newFileName = "countries";
-
-/* PRODUCT FAMILIES */
-
-const productFamilies = aux.createEndpointCallObj();
-productFamilies.endPoint = "/product-families";
-
-/* PRODUCT TYPES */
-
-const productTypes = aux.createEndpointCallObj();
-productTypes.endPoint = "/product-types";
-
-/* SALES PRESENTATION */
-
-const salesPresentation = aux.createEndpointCallObj();
-salesPresentation.endPoint = "/sales-presentations";
-
-endpointB2cSupport.calls.push(
-  countriesData,
-  countries,
-  productFamilies,
-  productTypes,
-  salesPresentation
-);
-
-endpoints.push(endpointB2cSupport);
+endpointB2cSupport.calls = [
+  callCountries,
+  {
+    method: "get",
+    endPoint: "/countries",
+    newFileName: "countries-data",
+    usePath: "data",
+  },
+  {
+    endPoint: "/product-families",
+  },
+  {
+    endPoint: "/product-types",
+  },
+  {
+    endPoint: "/sales-presentations",
+  },
+];
 
 /* ===================================================================
     B2C AVAILABILITY
