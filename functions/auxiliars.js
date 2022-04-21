@@ -7,11 +7,15 @@ function _getFilename(call) {
     return call.createNewFileName;
   } else if (call.usePath && call.usePath !== "data") {
     const segments = call.usePath.split(".");
-    return segments[(segments.length || 1) - 1];
+    return segments[_getLastSegmentIdx(segments)];
   } else if (call.endPoint) {
     const endPointsSegments = call.endPoint.split("/");
-    return endPointsSegments[(endPointsSegments.length || 1) - 1];
+    return endPointsSegments[_getLastSegmentIdx(endPointsSegments)];
   }
+}
+
+function _getLastSegmentIdx(segments) {
+  return (segments.length || 1) - 1;
 }
 
 function createEndpointCallObj() {
@@ -62,13 +66,18 @@ function onSuccesCallWriteData(response, call) {
 }
 
 function prepareEndpointCalls(data, headers) {
+  data.folder.split("/")?.length > 1;
+
   data.calls.forEach((call) => {
     call.endPoint = data.url + (call.endPoint || "");
+    call.targetFolder =
+      data.folder.split("/")?.length > 1
+        ? `${data.folder}`
+        : `${data.folder}/${data.name}`;
     call.createNewFileName =
-      `${data.folder}/${data.name}/${_getFilename(call)}.json` || "";
+      `${call.targetFolder}/${_getFilename(call)}.json` || "";
     call.usePath = call.usePath ? "data." + call.usePath : "data";
     call.axiosParam = toAxiosParam(call, headers);
-    call.targetFolder = `${data.folder}/${data.name}`;
   });
 }
 
@@ -115,6 +124,18 @@ function checkObjItsFilled(obj) {
   return false;
 }
 
+function createFolders(pathUsed) {
+  const paths = pathUsed.split("/");
+  paths.shift();
+  let pathToCreate = ".";
+  paths.forEach((path) => {
+    pathToCreate += `/${path}`;
+    if (!fsExtra.existsSync(pathToCreate)) {
+      fsExtra.mkdirSync(pathToCreate);
+    }
+  });
+}
+
 module.exports = {
   prepareEndpointCalls,
   getDataInPath,
@@ -126,4 +147,5 @@ module.exports = {
   createAxiosParam,
   toAxiosParam,
   checkObjItsFilled,
+  createFolders,
 };

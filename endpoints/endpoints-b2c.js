@@ -15,10 +15,12 @@ callCountries.method = "get";
 callCountries.endPoint = "/countries";
 callCountries.createNewFileName = "countries";
 callCountries.usePath = "";
+callCountries.body = {};
+callCountries.params = {};
 
 endpointB2cSupport.name = "support";
 endpointB2cSupport.url = urlBase + "/support";
-endpointB2cSupport.folder = "./results";
+endpointB2cSupport.folder = "./results/support";
 endpointB2cSupport.calls = [
   callCountries,
   {
@@ -47,7 +49,7 @@ endpoints.push(endpointB2cSupport);
 const endpointB2cAvailability = {
   name: "availability",
   url: urlBase + "/availability",
-  folder: "./results",
+  folder: "./results/availability",
   calls: [
     {
       method: "post",
@@ -85,7 +87,7 @@ B2C BUILD
 const endpointB2cBuild = {
   name: "build",
   url: urlBase + "/build//bookings",
-  folder: "./results",
+  folder: "./results/build",
   calls: [
     {
       endPoint: "/customer-rules",

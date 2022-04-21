@@ -4,10 +4,8 @@ const aux = require("../functions/auxiliars");
 const globalConfig = require("../config/global");
 
 function callToEndPoint(preparedEndPoint) {
-  if (!fsExtra.existsSync(preparedEndPoint.folder)) {
-    fsExtra.mkdirSync(preparedEndPoint.folder);
-  }
-
+  aux.createFolders(preparedEndPoint.folder);
+  
   preparedEndPoint.calls.forEach((call) => {
     if (
       fsExtra.existsSync(call.targetFolder) &&
