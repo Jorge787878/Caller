@@ -45,6 +45,7 @@ function toAxiosParam(data, headers) {
   axiosParam.method = data.method;
   axiosParam.url = data.endPoint;
   axiosParam.data = data.body;
+  axiosParam.params = data.params;
   axiosParam.headers = headers;
   return axiosParam;
 }
@@ -93,6 +94,7 @@ function createAxiosParam() {
     method: constantsGlobal.METHODS.GET,
     headers: {},
     data: {},
+    params: {},
     url: "",
   };
 }
