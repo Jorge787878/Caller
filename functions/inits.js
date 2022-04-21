@@ -9,7 +9,7 @@ const configB2c = require("../config/config-b2c");
 function callsB2c() {
   const config = aux.createNewConfig();
 
-  config.headers = configB2c.HEADERS;
+  config.headers = configB2c.headers;
 
   core.callToEndPoints(endpointsB2cSupport, config);
 }
