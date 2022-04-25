@@ -3,11 +3,12 @@ const aux = require("../functions/auxiliars");
 const baseUrl = "https://pokeapi.co/api/v2";
 
 const endpointsPokemons = [];
+
 endpointsPokemons.push(
   aux.createEndpointObj({
     name: "pokemons",
     url: baseUrl + "/generation/3",
-    folder: "./results/pokemons",
+    keepInFolder: "./results/pokemons",
     active: true,
     calls: [
       aux.createEndpointCallObj({
@@ -45,7 +46,7 @@ endpointsPokemons.push(
   aux.createEndpointObj({
     name: "pokemons",
     url: baseUrl + "/pokemon",
-    folder: "./results/pokemon",
+    keepInFolder: "./results/pokemon",
     active: true,
     calls: [
       aux.createEndpointCallObj({
@@ -68,11 +69,15 @@ endpointsPokemons.push(
   aux.createEndpointObj({
     name: "pokemons",
     url: baseUrl + "/pokemon",
-    folder: "./results/pokemon",
+    keepInFolder: "./results/pokemon",
     active: false,
     calls: [
       aux.createEndpointCallObj({
         endPoint: "/mew",
+        active: true,
+      }),
+      aux.createEndpointCallObj({
+        endPoint: "/arcanine",
         active: true,
       }),
     ],

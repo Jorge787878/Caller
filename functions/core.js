@@ -7,7 +7,7 @@ function callToEndPoint(preparedEndPoint) {
   if (!preparedEndPoint.active) {
     return;
   }
-  aux.createFolders(preparedEndPoint.folder);
+  aux.createFolders(preparedEndPoint.keepInFolder);
 
   preparedEndPoint.calls.forEach((call) => {
     if (!call.active) {

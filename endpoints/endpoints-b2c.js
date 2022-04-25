@@ -12,7 +12,7 @@ const endpointB2cSupport = aux.createEndpointObj({
   active: true,
   name: "support",
   url: urlBase + "/support",
-  folder: "./results/support",
+  keepInFolder: "./results/support",
   calls: [
     aux.createEndpointCallObj({
       method: "get",
@@ -51,7 +51,7 @@ endpoints.push(endpointB2cSupport);
 const endpointB2cAvailability = aux.createEndpointObj({
   name: "availability",
   url: urlBase + "/availability",
-  folder: "./results/availability",
+  keepInFolder: "./results/availability",
   active: true,
   calls: [
     aux.createEndpointCallObj({
@@ -90,7 +90,7 @@ B2C BUILD
 const endpointB2cBuild = aux.createEndpointObj({
   name: "build",
   url: urlBase + "/build//bookings",
-  folder: "./results/build",
+  keepInFolder: "./results/build",
   active: true,
   calls: [
     aux.createEndpointCallObj({

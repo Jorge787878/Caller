@@ -45,7 +45,7 @@ function createEndpointObj(obj) {
     url: obj && obj.url ? obj.url : "",
     active: obj && obj.active ? obj.active : false,
     /**  obj./** ||Se creara dentro de la carpeta... */
-    folder: obj && obj.folder ? obj.folder : "",
+    keepInFolder: obj && obj.keepInFolder ? obj.keepInFolder : "",
     headers: obj && obj.headers ? obj.headers : {},
     data: obj && obj.data ? obj.data : {},
     calls: obj && obj?.calls?.length ? obj.calls : [],
@@ -74,14 +74,14 @@ function onSuccesCallWriteData(response, call) {
 }
 
 function prepareEndpointCalls(data, headers) {
-  data.folder.split("/")?.length > 1;
+  data.keepInFolder.split("/")?.length > 1;
 
   data.calls.forEach((call) => {
     call.endPoint = data.url + (call.endPoint || "");
     call.targetFolder =
-      data.folder.split("/")?.length > 1
-        ? `${data.folder}`
-        : `${data.folder}/${data.name}`;
+      data.keepInFolder.split("/")?.length > 1
+        ? `${data.keepInFolder}`
+        : `${data.keepInFolder}/${data.name}`;
     call.createNewFileName =
       `${call.targetFolder}/${_getFilename(call)}.json` || "";
     call.usePath = call.usePath ? "data." + call.usePath : "data";
