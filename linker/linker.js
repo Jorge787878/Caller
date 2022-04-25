@@ -1,7 +1,10 @@
 module.exports = function (optConfig) {
   const fsExtra = require("fs-extra");
   const cp = require("child_process");
+
   const pathPackageJson = optConfig.pathToWork + "/package.json";
+  let packageJsonOriginal;
+  let packageJsonTemp;
 
   /* Prepare */
   const fnLog = (code, msg) => console.log(`\x1b[3${code}m` + msg + "\x1b[0m");
@@ -34,8 +37,8 @@ module.exports = function (optConfig) {
   executeSync("npm unlink " + optConfig.linkName);
 
   log.info("Getting package");
-  const packageJsonOriginal = fsExtra.readJsonSync(pathPackageJson);
-  const packageJsonTemp = JSON.parse(JSON.stringify(packageJsonOriginal));
+  packageJsonOriginal = fsExtra.readJsonSync(pathPackageJson);
+  packageJsonTemp = JSON.parse(JSON.stringify(packageJsonOriginal));
 
   log.info("Deleting library dependecy");
   delete packageJsonTemp.dependencies[optConfig.libraryName];
