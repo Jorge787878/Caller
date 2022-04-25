@@ -3,7 +3,7 @@ const linkOpts = require("./linker-config");
 const cp = require("child_process");
 
 /* Prepare */
-fnLog = (code, msg) => console.log(`\x1b[3${code}m` + msg + "\x1b[0m");
+const fnLog = (code, msg) => console.log(`\x1b[3${code}m` + msg + "\x1b[0m");
 
 const log = {
   fail: (msg) => fnLog(1, "X " + msg),
