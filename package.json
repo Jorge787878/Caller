@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "init": "node ./index.js",
+    "linker": "node ./linker/linker.js",
     "test": "node ./test.js"
   },
   "author": "",
