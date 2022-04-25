@@ -33,7 +33,7 @@ function callToEndPoint(preparedEndPoint) {
         stateMsg(`${preparedEndPoint.name} ${call.endPoint}`);
       })
       .catch((error) => {
-        aux.log.fail(`${preparedEndPoint.name} ${call.endPoint}`);
+        aux.log.fail(`${preparedEndPoint.name} ${call.endPoint} ${call.usePath}`);
       });
   });
 }

@@ -41,16 +41,16 @@ function createEndpointCallObj() {
   };
 }
 
-function createEndpointObj() {
+function createEndpointObj(obj) {
   return {
-    name: "",
-    url: "",
-    active: false,
-    /** Se creara dentro de la carpeta... */
-    folder: "",
-    headers: {},
-    data: {},
-    calls: [],
+    name: obj && obj.name ? obj.name : "",
+    url: obj && obj.url ? obj.url : "",
+    active: obj && obj.active ? obj.active : false,
+    /**  obj./** ||Se creara dentro de la carpeta... */
+    folder: obj && obj.folder ? obj.folder : "",
+    headers: obj && obj.headers ? obj.headers : {},
+    data: obj && obj.data ? obj.data : {},
+    calls: obj && obj?.calls?.length ? obj.calls : [],
   };
 }
 
