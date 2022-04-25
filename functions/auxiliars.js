@@ -26,18 +26,16 @@ function _getLastSegmentIdx(segments) {
   return (segments.length || 1) - 1;
 }
 
-function createEndpointCallObj() {
+function createEndpointCallObj(obj) {
   return {
-    /** required */
-    endPoint: "",
-    active: false,
-    body: {},
-    params: {},
-    /** Por defecto es "get" */
-    method: constantsGlobal.METHODS.GET,
-    createNewFileName: "",
-    /** Path usado al recibir la response */
-    usePath: "",
+    endPoint: obj && obj.endPoint ? obj.endPoint : "",
+    active: obj.active,
+    body: obj && obj.body ? obj.body : {},
+    params: obj && obj.params ? obj.params : {},
+    method: obj && obj.method ? obj.method : constantsGlobal.METHODS.GET,
+    createNewFileName:
+      obj && obj.createNewFileName ? obj.createNewFileName : "",
+    usePath: obj && obj.usePath ? obj.usePath : "",
   };
 }
 
@@ -102,19 +100,19 @@ function getDataInPath(obj, path, separator = ".") {
   return currentData;
 }
 
-function createNewConfig() {
+function createNewConfig(obj) {
   return {
-    headers: {},
+    headers: obj && obj.headers ? obj.headers : {},
   };
 }
 
-function createAxiosParam() {
+function createAxiosParam(obj) {
   return {
-    method: constantsGlobal.METHODS.GET,
-    headers: {},
-    data: {},
-    params: {},
-    url: "",
+    method: obj?.method || constantsGlobal.METHODS.GET,
+    headers: obj && obj.headers ? obj.headers : {},
+    data: obj && obj.data ? obj.data : {},
+    params: obj && obj.params ? obj.params : {},
+    url: obj?.url || "",
   };
 }
 

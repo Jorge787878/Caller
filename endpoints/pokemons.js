@@ -1,74 +1,82 @@
+const aux = require("../functions/auxiliars");
+
 const baseUrl = "https://pokeapi.co/api/v2";
 
 const endpointsPokemons = [];
-endpointsPokemons.push({
-  name: "pokemons",
-  url: baseUrl + "/generation/3",
-  folder: "./results/pokemons",
-  active: true,
-  calls: [
-    {
-      method: "get",
-      createNewFileName: "abilities-data",
-      usePath: "abilities",
-      active: true,
-    },
-    {
-      createNewFileName: "abilities",
-      usePath: "abilities",
-      active: true,
-    },
-    {
-      usePath: "types",
-      active: true,
-    },
-    {
-      usePath: "names",
-      active: true,
-    },
-    {
-      usePath: "moves",
-      active: true,
-    },
-    {
-      usePath: "pokemon_species",
-      active: true,
-    },
-  ],
-});
+endpointsPokemons.push(
+  aux.createEndpointObj({
+    name: "pokemons",
+    url: baseUrl + "/generation/3",
+    folder: "./results/pokemons",
+    active: true,
+    calls: [
+      aux.createEndpointCallObj({
+        method: "get",
+        createNewFileName: "abilities-data",
+        usePath: "abilities",
+        active: true,
+      }),
+      aux.createEndpointCallObj({
+        createNewFileName: "abilities",
+        usePath: "abilities",
+        active: true,
+      }),
+      aux.createEndpointCallObj({
+        usePath: "types",
+        active: true,
+      }),
+      aux.createEndpointCallObj({
+        usePath: "names",
+        active: true,
+      }),
+      aux.createEndpointCallObj({
+        usePath: "moves",
+        active: true,
+      }),
+      aux.createEndpointCallObj({
+        usePath: "pokemon_species",
+        active: true,
+      }),
+    ],
+  })
+);
 
-endpointsPokemons.push({
-  name: "pokemons",
-  url: baseUrl + "/pokemon",
-  folder: "./results/pokemon",
-  active: true,
-  calls: [
-    {
-      endPoint: "/ditto",
-      active: true,
-    },
-    {
-      endPoint: "/pikachu",
-      active: true,
-    },
-    {
-      endPoint: "/eevee",
-      active: false,
-    },
-  ],
-});
+endpointsPokemons.push(
+  aux.createEndpointObj({
+    name: "pokemons",
+    url: baseUrl + "/pokemon",
+    folder: "./results/pokemon",
+    active: true,
+    calls: [
+      aux.createEndpointCallObj({
+        endPoint: "/ditto",
+        active: true,
+      }),
+      aux.createEndpointCallObj({
+        endPoint: "/pikachu",
+        active: true,
+      }),
+      aux.createEndpointCallObj({
+        endPoint: "/eevee",
+        active: false,
+      }),
+    ],
+  })
+);
 
-endpointsPokemons.push({
-  name: "pokemons",
-  url: baseUrl + "/pokemon",
-  folder: "./results/pokemon",
-  active: false,
-  calls: [
-    {
-      endPoint: "/mew",
-      active: true,
-    },
-  ],
-});
+endpointsPokemons.push(
+  aux.createEndpointObj({
+    name: "pokemons",
+    url: baseUrl + "/pokemon",
+    folder: "./results/pokemon",
+    active: false,
+    calls: [
+      aux.createEndpointCallObj({
+        endPoint: "/mew",
+        active: true,
+      }),
+    ],
+  })
+);
 
 module.exports = endpointsPokemons;

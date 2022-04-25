@@ -8,43 +8,39 @@ const endpoints = [];
     B2C SUPPORT
   =================================================================== */
 
-const endpointB2cSupport = aux.createEndpointObj();
-
-const callCountries = aux.createEndpointCallObj();
-callCountries.method = "get";
-callCountries.endPoint = "/countries";
-callCountries.createNewFileName = "countries";
-callCountries.usePath = "";
-callCountries.active = true;
-callCountries.body = {};
-callCountries.params = {};
-
-endpointB2cSupport.active = true;
-endpointB2cSupport.name = "support";
-endpointB2cSupport.url = urlBase + "/support";
-endpointB2cSupport.folder = "./results/support";
-endpointB2cSupport.calls = [
-  callCountries,
-  {
-    method: "get",
-    endPoint: "/countries",
-    active: true,
-    createNewFileName: "countries-data",
-    usePath: "data",
-  },
-  {
-    endPoint: "/product-families",
-    active: true,
-  },
-  {
-    endPoint: "/product-types",
-    active: true,
-  },
-  {
-    endPoint: "/sales-presentations",
-    active: true,
-  },
-];
+const endpointB2cSupport = aux.createEndpointObj({
+  active: true,
+  name: "support",
+  url: urlBase + "/support",
+  folder: "./results/support",
+  calls: [
+    aux.createEndpointCallObj({
+      method: "get",
+      endPoint: "/countries",
+      createNewFileName: "countries",
+      active: true,
+    }),
+    aux.createEndpointCallObj({
+      method: "get",
+      endPoint: "/countries",
+      active: true,
+      createNewFileName: "countries-data",
+      usePath: "data",
+    }),
+    aux.createEndpointCallObj({
+      endPoint: "/product-families",
+      active: true,
+    }),
+    aux.createEndpointCallObj({
+      endPoint: "/product-types",
+      active: true,
+    }),
+    aux.createEndpointCallObj({
+      endPoint: "/sales-presentations",
+      active: true,
+    }),
+  ],
+});
 
 endpoints.push(endpointB2cSupport);
 
@@ -52,17 +48,16 @@ endpoints.push(endpointB2cSupport);
     B2C AVAILABILITY
   =================================================================== */
 
-const endpointB2cAvailability = {
+const endpointB2cAvailability = aux.createEndpointObj({
   name: "availability",
   url: urlBase + "/availability",
   folder: "./results/availability",
   active: true,
   calls: [
-    {
+    aux.createEndpointCallObj({
       method: "post",
       endPoint: "/search",
       createNewFileName: "search",
-      usePath: "",
       active: true,
       body: {
         currency: "EUR",
@@ -82,9 +77,9 @@ const endpointB2cAvailability = {
           },
         ],
       },
-    },
+    }),
   ],
-};
+});
 
 endpoints.push(endpointB2cAvailability);
 
@@ -92,22 +87,22 @@ endpoints.push(endpointB2cAvailability);
 B2C BUILD
 =================================================================== */
 
-const endpointB2cBuild = {
+const endpointB2cBuild = aux.createEndpointObj({
   name: "build",
   url: urlBase + "/build//bookings",
   folder: "./results/build",
   active: true,
   calls: [
-    {
+    aux.createEndpointCallObj({
       endPoint: "/customer-rules",
       active: true,
-    },
-    {
+    }),
+    aux.createEndpointCallObj({
       endPoint: "/passenger-rules",
       active: true,
-    },
+    }),
   ],
-};
+});
 
 endpoints.push(endpointB2cBuild);
 
