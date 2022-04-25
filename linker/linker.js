@@ -10,7 +10,10 @@ module.exports = function (optConfig) {
   const fnLog = (code, msg) => console.log(`\x1b[3${code}m` + msg + "\x1b[0m");
 
   const log = {
-    fail: (msg) => fnLog(1, "X " + msg),
+    fail: (msg) => {
+      fnLog(1, "X " + msg);
+      process.exit();
+    },
     success: (msg) => fnLog(2, "✔ " + msg),
     warning: (msg) => fnLog(3, "! " + msg),
     info: (msg) => fnLog(4, "ℹ " + msg),
@@ -26,7 +29,6 @@ module.exports = function (optConfig) {
     const optValue = optConfig[optName];
     if (!optValue) {
       log.fail(optName + " is not defined");
-      process.exit();
     }
   }
 
@@ -41,6 +43,11 @@ module.exports = function (optConfig) {
   packageJsonTemp = JSON.parse(JSON.stringify(packageJsonOriginal));
 
   log.info("Deleting library dependecy");
+  if (!packageJsonTemp.dependencies?.[optConfig.libraryName]) {
+    log.fail(
+      optConfig.libraryName + " not exist in dependencies of package.json"
+    );
+  }
   delete packageJsonTemp.dependencies[optConfig.libraryName];
   writePackage(pathPackageJson, packageJsonTemp);
 
