@@ -1,6 +1,14 @@
 const constantsGlobal = require("../constants/constants-global");
-const coLog = require("./lib/colog");
 const fsExtra = require("fs-extra");
+
+const fnLog = (code, msg) => console.log(`\x1b[3${code}m` + msg + "\x1b[0m");
+
+const log = {
+  fail: (msg) => fnLog(1, "X " + msg),
+  success: (msg) => fnLog(2, "✔ " + msg),
+  warning: (msg) => fnLog(3, "! " + msg),
+  info: (msg) => fnLog(4, "ℹ " + msg),
+};
 
 function _getFilename(call) {
   if (call.createNewFileName) {
@@ -22,6 +30,7 @@ function createEndpointCallObj() {
   return {
     /** required */
     endPoint: "",
+    active: false,
     body: {},
     params: {},
     /** Por defecto es "get" */
@@ -36,6 +45,7 @@ function createEndpointObj() {
   return {
     name: "",
     url: "",
+    active: false,
     /** Se creara dentro de la carpeta... */
     folder: "",
     headers: {},
@@ -143,7 +153,7 @@ module.exports = {
   createNewConfig,
   createEndpointCallObj,
   createEndpointObj,
-  coLog,
+  log,
   createAxiosParam,
   toAxiosParam,
   checkObjItsFilled,

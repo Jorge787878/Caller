@@ -4,9 +4,15 @@ const aux = require("../functions/auxiliars");
 const globalConfig = require("../config/global");
 
 function callToEndPoint(preparedEndPoint) {
+  if (!preparedEndPoint.active) {
+    return;
+  }
   aux.createFolders(preparedEndPoint.folder);
-  
+
   preparedEndPoint.calls.forEach((call) => {
+    if (!call.active) {
+      return;
+    }
     if (
       fsExtra.existsSync(call.targetFolder) &&
       globalConfig.deleteFilesBeforeCall
@@ -23,14 +29,11 @@ function callToEndPoint(preparedEndPoint) {
         const hasData = aux.checkObjItsFilled(callData);
 
         aux.onSuccesCallWriteData(response, call);
-        aux
-          .coLog()
-          [hasData ? "stateSuccess" : "stateWarning"](
-            `${preparedEndPoint.name} ${call.endPoint}`
-          );
+        const stateMsg = hasData ? aux.log.success : aux.log.warning;
+        stateMsg(`${preparedEndPoint.name} ${call.endPoint}`);
       })
       .catch((error) => {
-        aux.coLog().stateFail(`${preparedEndPoint.name} ${call.endPoint}`);
+        aux.log.fail(`${preparedEndPoint.name} ${call.endPoint}`);
       });
   });
 }

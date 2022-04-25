@@ -15,9 +15,11 @@ callCountries.method = "get";
 callCountries.endPoint = "/countries";
 callCountries.createNewFileName = "countries";
 callCountries.usePath = "";
+callCountries.active = true;
 callCountries.body = {};
 callCountries.params = {};
 
+endpointB2cSupport.active = true;
 endpointB2cSupport.name = "support";
 endpointB2cSupport.url = urlBase + "/support";
 endpointB2cSupport.folder = "./results/support";
@@ -26,17 +28,21 @@ endpointB2cSupport.calls = [
   {
     method: "get",
     endPoint: "/countries",
+    active: true,
     createNewFileName: "countries-data",
     usePath: "data",
   },
   {
     endPoint: "/product-families",
+    active: true,
   },
   {
     endPoint: "/product-types",
+    active: true,
   },
   {
     endPoint: "/sales-presentations",
+    active: true,
   },
 ];
 
@@ -50,12 +56,14 @@ const endpointB2cAvailability = {
   name: "availability",
   url: urlBase + "/availability",
   folder: "./results/availability",
+  active: true,
   calls: [
     {
       method: "post",
       endPoint: "/search",
       createNewFileName: "search",
       usePath: "",
+      active: true,
       body: {
         currency: "EUR",
         passengers: [{ id: "passenger_1", type: "AD" }],
@@ -88,12 +96,15 @@ const endpointB2cBuild = {
   name: "build",
   url: urlBase + "/build//bookings",
   folder: "./results/build",
+  active: true,
   calls: [
     {
       endPoint: "/customer-rules",
+      active: true,
     },
     {
       endPoint: "/passenger-rules",
+      active: true,
     },
   ],
 };
