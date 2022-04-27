@@ -19,97 +19,87 @@ module.exports = function (microfrontend, microOpts) {
     }
   }
 
-  aux.sleep(200).then(() => {
-    aux.log.info(microfrontend.name + " " + "Preparing...");
+  aux.log.info(microfrontend.name + " " + "Preparing...");
 
-    pathAppsWithDist =
-      microfrontend.pathToWork + microfrontend.folderContainerLibraryDistToLink;
-    if (
-      microOpts.forAllMicrofrontends.libraryForceUpdate ||
-      microfrontend.libraryForceUpdate ||
-      !fsExtra.existsSync(pathAppsWithDist)
-    ) {
-      aux.log.warning(
-        microfrontend.name + " " + pathAppsWithDist + " not exist, creating..."
-      );
-      fsExtra.emptyDirSync(pathAppsWithDist);
-      aux.log.success(microfrontend.name + " " + "Created " + pathAppsWithDist);
-    }
+  pathAppsWithDist =
+    microfrontend.pathToWork + microfrontend.folderContainerLibraryDistToLink;
+  if (
+    microOpts.forAllMicrofrontends.libraryForceUpdate ||
+    microfrontend.libraryForceUpdate ||
+    !fsExtra.existsSync(pathAppsWithDist)
+  ) {
+    aux.log.warning(
+      microfrontend.name + " " + pathAppsWithDist + " not exist, creating..."
+    );
+    fsExtra.emptyDirSync(pathAppsWithDist);
+    aux.log.success(microfrontend.name + " " + "Created " + pathAppsWithDist);
+  }
 
-    if (
-      microOpts.forAllMicrofrontends.libraryForceUpdate ||
-      microfrontend.libraryForceUpdate ||
-      fsExtra.readdirSync(pathAppsWithDist)?.length === 0
-    ) {
-      aux.log.warning(
-        microfrontend.name +
-          " " +
-          pathAppsWithDist +
-          " is empty, copying the original dist"
-      );
-      fsExtra.copySync(microOpts.pathLibraryDist, pathAppsWithDist);
-      aux.log.success(
-        microfrontend.name + " " + "Copied to " + microOpts.pathLibraryDist
-      );
-    }
-  });
+  if (
+    microOpts.forAllMicrofrontends.libraryForceUpdate ||
+    microfrontend.libraryForceUpdate ||
+    fsExtra.readdirSync(pathAppsWithDist)?.length === 0
+  ) {
+    aux.log.warning(
+      microfrontend.name +
+        " " +
+        pathAppsWithDist +
+        " is empty, copying the original dist"
+    );
+    fsExtra.copySync(microOpts.pathLibraryDist, pathAppsWithDist);
+    aux.log.success(
+      microfrontend.name + " " + "Copied to " + microOpts.pathLibraryDist
+    );
+  }
 
   /* ===================================================================
     INIT
   =================================================================== */
 
-  aux.sleep(200).then(() => {
-    aux.log.info(microfrontend.name + " " + "Initializing...");
-    aux.executeSync("cd " + microfrontend.pathToWork);
+  aux.log.info(microfrontend.name + " " + "Initializing...");
+  aux.executeSync("cd " + microfrontend.pathToWork);
 
-    aux.log.info(microfrontend.name + " " + "Unlinking...");
-    aux.executeSync("npm unlink " + microfrontend.linkName);
+  aux.log.info(microfrontend.name + " " + "Unlinking...");
+  aux.executeSync("npm unlink " + microfrontend.linkName);
 
-    if (
-      microOpts.forAllMicrofrontends.nodeModulesInstall ||
-      microfrontend.nodeModulesInstall
-    ) {
-      aux.log.info(microfrontend.name + " " + "Getting package");
-      packageJsonOriginal = fsExtra.readJsonSync(pathPackageJson);
-      packageJsonTemp = JSON.parse(JSON.stringify(packageJsonOriginal));
+  if (
+    microOpts.forAllMicrofrontends.nodeModulesInstall ||
+    microfrontend.nodeModulesInstall
+  ) {
+    aux.log.info(microfrontend.name + " " + "Getting package");
+    packageJsonOriginal = fsExtra.readJsonSync(pathPackageJson);
+    packageJsonTemp = JSON.parse(JSON.stringify(packageJsonOriginal));
 
-      aux.log.info(microfrontend.name + " " + "Deleting library dependecy");
-      if (!packageJsonTemp.dependencies?.[microfrontend.libraryName]) {
-        aux.log.fail(
-          microfrontend.name +
-            " " +
-            microfrontend.libraryName +
-            " not exist in dependencies of package.json"
-        );
-      }
-      delete packageJsonTemp.dependencies[microfrontend.libraryName];
-      aux.writePackage(pathPackageJson, packageJsonTemp);
-
-      aux.log.info(
-        microfrontend.name + " " + "Installing package dependencies"
+    aux.log.info(microfrontend.name + " " + "Deleting library dependecy");
+    if (!packageJsonTemp.dependencies?.[microfrontend.libraryName]) {
+      aux.log.fail(
+        microfrontend.name +
+          " " +
+          microfrontend.libraryName +
+          " not exist in dependencies of package.json"
       );
-      process.chdir(microfrontend.pathToWork);
-      aux.executeSync("npm install");
-
-      aux.log.info(
-        microfrontend.name + " " + "Restoring original package.json"
-      );
-      aux.writePackage(pathPackageJson, packageJsonOriginal);
     }
+    delete packageJsonTemp.dependencies[microfrontend.libraryName];
+    aux.writePackage(pathPackageJson, packageJsonTemp);
 
-    /* ===================================================================
+    aux.log.info(microfrontend.name + " " + "Installing package dependencies");
+    process.chdir(microfrontend.pathToWork);
+    aux.executeSync("npm install");
+
+    aux.log.info(microfrontend.name + " " + "Restoring original package.json");
+    aux.writePackage(pathPackageJson, packageJsonOriginal);
+  }
+
+  /* ===================================================================
       POST INSTALL
     =================================================================== */
-    aux.sleep(100).then(() => {
-      aux.log.info(microfrontend.name + " " + "Going to path");
-      process.chdir(pathAppsWithDist);
+  aux.log.info(microfrontend.name + " " + "Going to path");
+  process.chdir(pathAppsWithDist);
 
-      aux.log.info(microfrontend.name + " " + "Linking...");
-      aux.executeSync("npm link");
-      process.chdir(microfrontend.pathToWork);
-      aux.executeSync("npm link " + microfrontend.linkName);
+  aux.log.info(microfrontend.name + " " + "Linking...");
+  aux.executeSync("npm link");
+  process.chdir(microfrontend.pathToWork);
+  aux.executeSync("npm link " + microfrontend.linkName);
 
-      aux.log.success(microfrontend.name + " " + "Link ended");
-    });
-  });
+  aux.log.success(microfrontend.name + " " + "Link ended");
 };
