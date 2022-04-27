@@ -7,22 +7,36 @@ module.exports = function (optConfig) {
   let packageJsonTemp;
 
   /* Prepare */
-  const fnLog = (code, msg) => console.log(`\x1b[3${code}m` + msg + "\x1b[0m");
+  const fnLog = (code, msg) =>
+    console.log(`\x1b[3${code}m` + optConfig.name + " " + msg + "\x1b[0m");
 
   const log = {
-    fail: (msg) => {
-      fnLog(1, "X " + msg);
-      process.exit();
-    },
+    fail: (msg) => fnLog(1, "X " + msg),
     success: (msg) => fnLog(2, "✔ " + msg),
     warning: (msg) => fnLog(3, "! " + msg),
     info: (msg) => fnLog(4, "ℹ " + msg),
   };
 
+  getPathBack = (pathRaw) => {
+    const backPathList = pathRaw.split("/");
+    backPathList.shift();
+    return backPathList.map(() => "..").join("/");
+  };
+
   const writePackage = (pathToWrite, newPackage) =>
     fsExtra.writeFileSync(pathToWrite, JSON.stringify(newPackage, null, 2));
 
-  const executeSync = (command) => cp.execSync(command, { stdio: "inherit" });
+  const executeSync = (command) =>
+    cp.execSync(command, { stdio: "inherit", maxBuffer: Infinity });
+
+  const sleep = (time) => {
+    return new Promise((res) => {
+      const timer = setTimeout(() => {
+        res();
+        clearTimeout(timer);
+      }, time);
+    });
+  };
 
   log.info("Preparing " + optConfig.name);
   for (const optName in optConfig) {
@@ -32,38 +46,56 @@ module.exports = function (optConfig) {
     }
   }
 
-  log.info("Initializing...");
-  executeSync("cd " + optConfig.pathToWork);
+  /* ===================================================================
+    INIT
+  =================================================================== */
+  
+  sleep(500).then(() => {
+    log.info("Initializing...");
+    executeSync("cd " + optConfig.pathToWork);
 
-  log.info("Unlinking...");
-  executeSync("npm unlink " + optConfig.linkName);
+    log.info("Unlinking...");
+    executeSync("npm unlink " + optConfig.linkName);
 
-  log.info("Getting package");
-  packageJsonOriginal = fsExtra.readJsonSync(pathPackageJson);
-  packageJsonTemp = JSON.parse(JSON.stringify(packageJsonOriginal));
+    log.info("Getting package");
+    packageJsonOriginal = fsExtra.readJsonSync(pathPackageJson);
+    packageJsonTemp = JSON.parse(JSON.stringify(packageJsonOriginal));
 
-  log.info("Deleting library dependecy");
-  if (!packageJsonTemp.dependencies?.[optConfig.libraryName]) {
-    log.fail(
-      optConfig.libraryName + " not exist in dependencies of package.json"
-    );
-  }
-  delete packageJsonTemp.dependencies[optConfig.libraryName];
-  writePackage(pathPackageJson, packageJsonTemp);
+    log.info("Deleting library dependecy");
+    if (!packageJsonTemp.dependencies?.[optConfig.libraryName]) {
+      log.fail(
+        optConfig.libraryName + " not exist in dependencies of package.json"
+      );
+    }
+    delete packageJsonTemp.dependencies[optConfig.libraryName];
+    writePackage(pathPackageJson, packageJsonTemp);
 
-  log.info("Installing package dependencies");
-  executeSync("npm install");
+    log.warning("before install " + process.cwd());
+    log.info("Installing package dependencies");
+    process.chdir(optConfig.pathToWork);
+    executeSync("npm install");
+    log.warning("after install " + process.cwd());
 
-  log.info("Restoring original package.json");
-  writePackage(pathPackageJson, packageJsonOriginal);
+    /* ===================================================================
+      POST INSTALL
+    */
+    sleep(100).then(() => {
+      log.info("Restoring original package.json");
+      writePackage(pathPackageJson, packageJsonOriginal);
 
-  log.info("Going to path and link");
-  executeSync(
-    "cd " + optConfig.pathToWork + optConfig.folderContainerLibraryDistToLink
-  );
-  executeSync("npm link");
-  executeSync("cd ../..");
-  executeSync("npm link " + optConfig.linkName);
+      log.info("Going to path and link");
 
-  log.success("Link ended");
+      process.chdir(
+        optConfig.pathToWork + optConfig.folderContainerLibraryDistToLink
+      );
+      executeSync("npm link");
+
+      process.chdir(optConfig.pathToWork);
+      log.warning("before " + process.cwd());
+      executeSync("npm link " + optConfig.linkName);
+      log.warning("after " + process.cwd() + "npm link " + optConfig.linkName);
+
+      log.success("Link ended");
+    });
+  });
 };
