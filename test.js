@@ -1,6 +1,7 @@
 const cp = require("child_process");
+const fsExtra = require("fs-extra");
 
-console.log('before', process.cwd());
-// cp.execSync('cd..')
-process.chdir("..")
-console.log('after', process.cwd());
+// let emptyDir = fsExtra.emptyDirSync('./foo')
+let readDir = fsExtra.readdirSync('./foo')
+
+console.log(readDir)

@@ -1,101 +1,115 @@
-module.exports = function (optConfig) {
+module.exports = function (microfrontend, microOpts) {
   const fsExtra = require("fs-extra");
-  const cp = require("child_process");
+  const aux = require("./utils/linker-aux");
 
-  const pathPackageJson = optConfig.pathToWork + "/package.json";
+  const pathPackageJson = microfrontend.pathToWork + "/package.json";
   let packageJsonOriginal;
   let packageJsonTemp;
+  let pathAppsWithDist;
 
-  /* Prepare */
-  const fnLog = (code, msg) =>
-    console.log(`\x1b[3${code}m` + optConfig.name + " " + msg + "\x1b[0m");
+  /* ===================================================================
+    Prepare
+  =================================================================== */
 
-  const log = {
-    fail: (msg) => fnLog(1, "X " + msg),
-    success: (msg) => fnLog(2, "✔ " + msg),
-    warning: (msg) => fnLog(3, "! " + msg),
-    info: (msg) => fnLog(4, "ℹ " + msg),
-  };
-
-  getPathBack = (pathRaw) => {
-    const backPathList = pathRaw.split("/");
-    backPathList.shift();
-    return backPathList.map(() => "..").join("/");
-  };
-
-  const writePackage = (pathToWrite, newPackage) =>
-    fsExtra.writeFileSync(pathToWrite, JSON.stringify(newPackage, null, 2));
-
-  const executeSync = (command) =>
-    cp.execSync(command, { stdio: "inherit", maxBuffer: Infinity });
-
-  const sleep = (time) => {
-    return new Promise((res) => {
-      const timer = setTimeout(() => {
-        res();
-        clearTimeout(timer);
-      }, time);
-    });
-  };
-
-  log.info("Preparing " + optConfig.name);
-  for (const optName in optConfig) {
-    const optValue = optConfig[optName];
+  aux.log.info("Preparing " + microfrontend.name);
+  for (const optName in microfrontend) {
+    const optValue = microfrontend[optName];
     if (!optValue) {
-      log.fail(optName + " is not defined");
+      aux.log.fail(optName + " is not defined");
     }
   }
+
+  aux.sleep(200).then(() => {
+    aux.log.info(microfrontend.name + " " + "Preparing...");
+
+    pathAppsWithDist =
+      microfrontend.pathToWork + microfrontend.folderContainerLibraryDistToLink;
+    if (
+      microOpts.forAllMicrofrontends.libraryForceUpdate ||
+      microfrontend.libraryForceUpdate ||
+      !fsExtra.existsSync(pathAppsWithDist)
+    ) {
+      aux.log.warning(
+        microfrontend.name + " " + pathAppsWithDist + " not exist, creating..."
+      );
+      fsExtra.emptyDirSync(pathAppsWithDist);
+      aux.log.success(microfrontend.name + " " + "Created " + pathAppsWithDist);
+    }
+
+    if (
+      microOpts.forAllMicrofrontends.libraryForceUpdate ||
+      microfrontend.libraryForceUpdate ||
+      fsExtra.readdirSync(pathAppsWithDist)?.length === 0
+    ) {
+      aux.log.warning(
+        microfrontend.name +
+          " " +
+          pathAppsWithDist +
+          " is empty, copying the original dist"
+      );
+      fsExtra.copySync(microOpts.pathLibraryDist, pathAppsWithDist);
+      aux.log.success(
+        microfrontend.name + " " + "Copied to " + microOpts.pathLibraryDist
+      );
+    }
+  });
 
   /* ===================================================================
     INIT
   =================================================================== */
-  
-  sleep(500).then(() => {
-    log.info("Initializing...");
-    executeSync("cd " + optConfig.pathToWork);
 
-    log.info("Unlinking...");
-    executeSync("npm unlink " + optConfig.linkName);
+  aux.sleep(200).then(() => {
+    aux.log.info(microfrontend.name + " " + "Initializing...");
+    aux.executeSync("cd " + microfrontend.pathToWork);
 
-    log.info("Getting package");
-    packageJsonOriginal = fsExtra.readJsonSync(pathPackageJson);
-    packageJsonTemp = JSON.parse(JSON.stringify(packageJsonOriginal));
+    aux.log.info(microfrontend.name + " " + "Unlinking...");
+    aux.executeSync("npm unlink " + microfrontend.linkName);
 
-    log.info("Deleting library dependecy");
-    if (!packageJsonTemp.dependencies?.[optConfig.libraryName]) {
-      log.fail(
-        optConfig.libraryName + " not exist in dependencies of package.json"
+    if (
+      microOpts.forAllMicrofrontends.nodeModulesInstall ||
+      microfrontend.nodeModulesInstall
+    ) {
+      aux.log.info(microfrontend.name + " " + "Getting package");
+      packageJsonOriginal = fsExtra.readJsonSync(pathPackageJson);
+      packageJsonTemp = JSON.parse(JSON.stringify(packageJsonOriginal));
+
+      aux.log.info(microfrontend.name + " " + "Deleting library dependecy");
+      if (!packageJsonTemp.dependencies?.[microfrontend.libraryName]) {
+        aux.log.fail(
+          microfrontend.name +
+            " " +
+            microfrontend.libraryName +
+            " not exist in dependencies of package.json"
+        );
+      }
+      delete packageJsonTemp.dependencies[microfrontend.libraryName];
+      aux.writePackage(pathPackageJson, packageJsonTemp);
+
+      aux.log.info(
+        microfrontend.name + " " + "Installing package dependencies"
       );
-    }
-    delete packageJsonTemp.dependencies[optConfig.libraryName];
-    writePackage(pathPackageJson, packageJsonTemp);
+      process.chdir(microfrontend.pathToWork);
+      aux.executeSync("npm install");
 
-    log.warning("before install " + process.cwd());
-    log.info("Installing package dependencies");
-    process.chdir(optConfig.pathToWork);
-    executeSync("npm install");
-    log.warning("after install " + process.cwd());
+      aux.log.info(
+        microfrontend.name + " " + "Restoring original package.json"
+      );
+      aux.writePackage(pathPackageJson, packageJsonOriginal);
+    }
 
     /* ===================================================================
       POST INSTALL
-    */
-    sleep(100).then(() => {
-      log.info("Restoring original package.json");
-      writePackage(pathPackageJson, packageJsonOriginal);
+    =================================================================== */
+    aux.sleep(100).then(() => {
+      aux.log.info(microfrontend.name + " " + "Going to path");
+      process.chdir(pathAppsWithDist);
 
-      log.info("Going to path and link");
+      aux.log.info(microfrontend.name + " " + "Linking...");
+      aux.executeSync("npm link");
+      process.chdir(microfrontend.pathToWork);
+      aux.executeSync("npm link " + microfrontend.linkName);
 
-      process.chdir(
-        optConfig.pathToWork + optConfig.folderContainerLibraryDistToLink
-      );
-      executeSync("npm link");
-
-      process.chdir(optConfig.pathToWork);
-      log.warning("before " + process.cwd());
-      executeSync("npm link " + optConfig.linkName);
-      log.warning("after " + process.cwd() + "npm link " + optConfig.linkName);
-
-      log.success("Link ended");
+      aux.log.success(microfrontend.name + " " + "Link ended");
     });
   });
 };
