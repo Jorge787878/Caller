@@ -105,6 +105,29 @@ const endpointB2cBuild = aux.createEndpointObj({
 });
 
 endpoints.push(endpointB2cBuild);
+/* ===================================================================
+B2C BUILD
+=================================================================== */
+
+const endpointB2cManage = aux.createEndpointObj({
+  name: "manage",
+  url: urlBase + "/manage",
+  keepInFolder: "./results/manage",
+  active: false,
+  calls: [
+    aux.createEndpointCallObj({
+      endPoint: "/bookings?target=NEXT&status=CONFIRMED&page=0",
+      active: true,
+      body: {
+        target: "NEXT",
+        status: "CONFIRMED",
+        page: "0",
+      },
+    }),
+  ],
+});
+
+endpoints.push(endpointB2cManage);
 
 /* ===================================================================
   FIN
