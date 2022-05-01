@@ -1,6 +1,6 @@
 module.exports = function (microfrontend, microOpts) {
   const fsExtra = require("fs-extra");
-  const aux = require("./utils/linker-aux");
+  const aux = require("./functions/linker-aux");
 
   const pathPackageJson = microfrontend.pathToWork + "/package.json";
   let packageJsonOriginal;

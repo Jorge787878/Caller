@@ -113,12 +113,12 @@ const endpointB2cManage = aux.createEndpointObj({
   name: "manage",
   url: urlBase + "/manage",
   keepInFolder: "./results/manage",
-  active: false,
+  active: true,
   calls: [
     aux.createEndpointCallObj({
-      endPoint: "/bookings?target=NEXT&status=CONFIRMED&page=0",
+      endPoint: "/bookings",
       active: true,
-      body: {
+      params: {
         target: "NEXT",
         status: "CONFIRMED",
         page: "0",

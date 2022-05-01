@@ -17,19 +17,9 @@ const writePackage = (pathToWrite, newPackage) =>
 const executeSync = (command) =>
   cp.execSync(command, { stdio: "inherit", maxBuffer: Infinity });
 
-const sleep = (time) => {
-  return new Promise((res) => {
-    const timer = setTimeout(() => {
-      res();
-      clearTimeout(timer);
-    }, time);
-  });
-};
-
 module.exports = {
   fnLog,
   log,
   writePackage,
   executeSync,
-  sleep,
 };
