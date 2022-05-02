@@ -60,20 +60,39 @@ const endpointB2cAvailability = aux.createEndpointObj({
       createNewFileName: "search",
       active: true,
       body: {
+        cfgToken:
+          "H4sIAAAAAAAA/52QTWvDMAyG/4vO8XBVO3Fy62CwwW4d7FDK8GebNV292D2MkP9epVu33QoFHx69lh5hD6C7DTTwuERZQgG2dVQZtMS93RK/PtwTp09L/PS8XLx9B7nd+5T1PlKMHJFxwVC98LqRdMSdkLzCuaxxGrYBmtVAM5P8PVHU5kw4LQwdNLk/+gJcTF8flyJF6p0X4H+ux+JvPvhfwzFueu38RRR0l2409d4cDrurotk/0ZqabaKnEbRd0i7SbwywO8uFks6WXDFTh8BEaSTTtTQMqypUUoeZ4grG8QShYOVggQEAAA==.MQosXZ7IyAy7Ru8Z4AmV7boN7QJL7yWZ9zgpS9/WgGg=",
         currency: "EUR",
-        passengers: [{ id: "passenger_1", type: "AD" }],
+        passengers: [
+          {
+            id: "passenger_1",
+            type: "AD",
+          },
+          {
+            id: "passenger_2",
+            type: "AD",
+          },
+          {
+            id: "passenger_3",
+            type: "CH",
+          },
+          {
+            id: "passenger_4",
+            type: "IN",
+          },
+        ],
         travels: [
           {
             origin: "60000",
             destination: "71801",
             direction: "outbound",
-            departure: "2022-04-19",
+            departure: "2022-12-29",
           },
           {
             origin: "71801",
             destination: "60000",
             direction: "inbound",
-            departure: "2022-04-19",
+            departure: "2022-12-30",
           },
         ],
       },

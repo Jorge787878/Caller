@@ -30,10 +30,10 @@ function callToEndPoint(preparedEndPoint) {
 
         aux.onSuccesCallWriteData(response, call);
         const stateMsg = hasData ? aux.log.success : aux.log.warning;
-        stateMsg(`${preparedEndPoint.name} ${call.endPoint}`);
+        stateMsg(`${preparedEndPoint.name} ${call.endPoint} -> ${call.createNewFileName}`);
       })
       .catch((error) => {
-        aux.log.fail(`${preparedEndPoint.name} ${call.endPoint} ${call.usePath}`);
+        aux.log.fail(`${preparedEndPoint.name} ${call.endPoint} - path: ${call.usePath}`);
       });
   });
 }
