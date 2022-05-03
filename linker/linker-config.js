@@ -12,7 +12,7 @@ const options = {
 const list = [
   {
     name: "B2C",
-    active: true,
+    active: false,
     pathToWork: repos + "/web-b2c",
     folderContainerLibraryDistToLink: "/ilsa-apps/ilsa-library",
     linkName: "@ilsa/library",
@@ -69,6 +69,17 @@ const list = [
     name: "web-component-header",
     active: false,
     pathToWork: repos + "/web-component-header",
+    folderContainerLibraryDistToLink: "/ilsa-apps/ilsa-library",
+    linkName: "@ilsa/library",
+    libraryName: "@ilsa/library",
+    nodeModulesInstall: true,
+    libraryLinkCreate: true,
+    libraryForceUpdate: false,
+  },
+  {
+    name: "web-component-main-search",
+    active: true,
+    pathToWork: repos + "/web-component-main-search",
     folderContainerLibraryDistToLink: "/ilsa-apps/ilsa-library",
     linkName: "@ilsa/library",
     libraryName: "@ilsa/library",
