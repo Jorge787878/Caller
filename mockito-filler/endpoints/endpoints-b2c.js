@@ -8,46 +8,46 @@ const endpoints = [];
     B2C SUPPORT
   =================================================================== */
 
-const endpointB2cSupport = aux.createEndpointObj({
+const endpointB2cSupport = aux.createUrl({
   active: true,
   name: "support",
   url: urlBase + "/support",
   keepInFolder: "./results/support",
   calls: [
-    aux.createEndpointCallObj({
+    aux.createEndpoint({
       method: "get",
       endPoint: "/countries",
       createNewFileName: "countries",
       active: true,
     }),
-    aux.createEndpointCallObj({
+    aux.createEndpoint({
       method: "get",
       endPoint: "/countries",
       active: true,
       createNewFileName: "countries-data",
       usePath: "data",
     }),
-    aux.createEndpointCallObj({
+    aux.createEndpoint({
       endPoint: "/product-families",
       active: true,
     }),
-    aux.createEndpointCallObj({
+    aux.createEndpoint({
       endPoint: "/product-types",
       active: true,
     }),
-    aux.createEndpointCallObj({
+    aux.createEndpoint({
       endPoint: "/sales-presentations",
       active: true,
     }),
-    aux.createEndpointCallObj({
+    aux.createEndpoint({
       endPoint: "/stations",
       active: true,
     }),
-    aux.createEndpointCallObj({
+    aux.createEndpoint({
       endPoint: "/discountcard-types",
       active: true,
     }),
-    aux.createEndpointCallObj({
+    aux.createEndpoint({
       endPoint: "/passenger-types",
       active: true,
     }),
@@ -60,13 +60,13 @@ endpoints.push(endpointB2cSupport);
     B2C AVAILABILITY
   =================================================================== */
 
-const endpointB2cAvailability = aux.createEndpointObj({
+const endpointB2cAvailability = aux.createUrl({
   name: "availability",
   url: urlBase + "/availability",
   keepInFolder: "./results/availability",
   active: true,
   calls: [
-    aux.createEndpointCallObj({
+    aux.createEndpoint({
       method: "post",
       endPoint: "/search",
       createNewFileName: "search",
@@ -118,17 +118,17 @@ endpoints.push(endpointB2cAvailability);
 B2C BUILD
 =================================================================== */
 
-const endpointB2cBuild = aux.createEndpointObj({
+const endpointB2cBuild = aux.createUrl({
   name: "build",
   url: urlBase + "/build//bookings",
   keepInFolder: "./results/build",
   active: true,
   calls: [
-    aux.createEndpointCallObj({
+    aux.createEndpoint({
       endPoint: "/customer-rules",
       active: true,
     }),
-    aux.createEndpointCallObj({
+    aux.createEndpoint({
       endPoint: "/passenger-rules",
       active: true,
     }),
@@ -140,13 +140,13 @@ endpoints.push(endpointB2cBuild);
 B2C BUILD
 =================================================================== */
 
-const endpointB2cManage = aux.createEndpointObj({
+const endpointB2cManage = aux.createUrl({
   name: "manage",
   url: urlBase + "/manage",
   keepInFolder: "./results/manage",
   active: true,
   calls: [
-    aux.createEndpointCallObj({
+    aux.createEndpoint({
       endPoint: "/bookings",
       active: true,
       params: {

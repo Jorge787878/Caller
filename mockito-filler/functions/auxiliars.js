@@ -26,7 +26,7 @@ function _getLastSegmentIdx(segments) {
   return (segments.length || 1) - 1;
 }
 
-function createEndpointCallObj(obj) {
+function createEndpoint(obj) {
   return {
     name: obj && obj.endPoint ? obj.endPoint.replace("/", "") : "",
     endPoint: obj && obj.endPoint ? obj.endPoint : "",
@@ -40,7 +40,7 @@ function createEndpointCallObj(obj) {
   };
 }
 
-function createEndpointObj(obj) {
+function createUrl(obj) {
   return {
     name: obj && obj.name ? obj.name : "",
     url: obj && obj.url ? obj.url : "",
@@ -154,8 +154,8 @@ module.exports = {
   getDataInPath,
   onSuccesCallWriteData,
   createNewConfig,
-  createEndpointCallObj,
-  createEndpointObj,
+  createEndpoint,
+  createUrl,
   log,
   createAxiosParam,
   toAxiosParam,
