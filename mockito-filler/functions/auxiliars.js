@@ -28,6 +28,7 @@ function _getLastSegmentIdx(segments) {
 
 function createEndpointCallObj(obj) {
   return {
+    name: obj && obj.endPoint ? obj.endPoint.replace("/", "") : "",
     endPoint: obj && obj.endPoint ? obj.endPoint : "",
     active: obj.active,
     body: obj && obj.body ? obj.body : {},
@@ -77,7 +78,11 @@ function prepareEndpointCalls(data, headers) {
   data.keepInFolder.split("/")?.length > 1;
 
   data.calls.forEach((call) => {
-    call.endPoint = data.url + (call.endPoint || "");
+    (call.name =
+      call && !call.name && call.endPoint
+        ? call.endPoint.replace("/", "")
+        : call.name),
+      (call.endPoint = data.url + (call.endPoint || ""));
     call.targetFolder =
       data.keepInFolder.split("/")?.length > 1
         ? `${data.keepInFolder}`

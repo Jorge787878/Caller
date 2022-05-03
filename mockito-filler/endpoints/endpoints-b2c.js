@@ -39,6 +39,18 @@ const endpointB2cSupport = aux.createEndpointObj({
       endPoint: "/sales-presentations",
       active: true,
     }),
+    aux.createEndpointCallObj({
+      endPoint: "/stations",
+      active: true,
+    }),
+    aux.createEndpointCallObj({
+      endPoint: "/discountcard-types",
+      active: true,
+    }),
+    aux.createEndpointCallObj({
+      endPoint: "/passenger-types",
+      active: true,
+    }),
   ],
 });
 
