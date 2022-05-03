@@ -17,9 +17,24 @@ const writePackage = (pathToWrite, newPackage) =>
 const executeSync = (command) =>
   cp.execSync(command, { stdio: "inherit", maxBuffer: Infinity });
 
+function createLink(active, name, path) {
+  return {
+    name,
+    active,
+    pathToWork: path + "/" + name,
+    folderContainerLibraryDistToLink: "/ilsa-apps/ilsa-library",
+    linkName: "@ilsa/library",
+    libraryName: "@ilsa/library",
+    nodeModulesInstall: true,
+    libraryLinkCreate: true,
+    libraryForceUpdate: false,
+  };
+}
+
 module.exports = {
   fnLog,
   log,
+  createLink,
   writePackage,
   executeSync,
 };

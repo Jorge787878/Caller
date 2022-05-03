@@ -1,5 +1,18 @@
+const aux = require("./functions/linker-aux");
+
 const repos = "C:/Users/jjcampoy/Documents/proyectos/vector/ilsa/repos";
-const options = {
+
+const list = [
+  aux.createLink(false, "web-b2c", repos),
+  aux.createLink(false, "web-b2b", repos),
+  aux.createLink(false, "web-component-slider", repos),
+  aux.createLink(false, "web-component-header", repos),
+  aux.createLink(false, "web-component-main-footer", repos),
+  aux.createLink(false, "web-component-dinamic-footer", repos),
+  aux.createLink(false, "web-component-main-search", repos),
+];
+
+const optionsExtra = {
   pathLibraryDist: repos + "/ilsa-library/dist/ilsa-library",
   forAllMicrofrontends: {
     active: false,
@@ -9,87 +22,7 @@ const options = {
   },
 };
 
-const list = [
-  {
-    name: "B2C",
-    active: false,
-    pathToWork: repos + "/web-b2c",
-    folderContainerLibraryDistToLink: "/ilsa-apps/ilsa-library",
-    linkName: "@ilsa/library",
-    libraryName: "@ilsa/library",
-    nodeModulesInstall: true,
-    libraryLinkCreate: true,
-    libraryForceUpdate: false,
-  },
-  {
-    name: "B2B",
-    active: false,
-    pathToWork: repos + "/web-b2b",
-    folderContainerLibraryDistToLink: "/ilsa-apps/ilsa-library",
-    linkName: "@ilsa/library",
-    libraryName: "@ilsa/library",
-    nodeModulesInstall: true,
-    libraryLinkCreate: true,
-    libraryForceUpdate: false,
-  },
-  {
-    name: "web-component-main-footer",
-    active: false,
-    pathToWork: repos + "/web-component-main-footer",
-    folderContainerLibraryDistToLink: "/ilsa-apps/ilsa-library",
-    linkName: "@ilsa/library",
-    libraryName: "@ilsa/library",
-    nodeModulesInstall: true,
-    libraryLinkCreate: true,
-    libraryForceUpdate: false,
-  },
-  {
-    name: "web-component-dinamic-footer",
-    active: false,
-    pathToWork: repos + "/web-component-dinamic-footer",
-    folderContainerLibraryDistToLink: "/ilsa-apps/ilsa-library",
-    linkName: "@ilsa/library",
-    libraryName: "@ilsa/library",
-    nodeModulesInstall: true,
-    libraryLinkCreate: true,
-    libraryForceUpdate: false,
-  },
-  {
-    name: "web-component-slider",
-    active: false,
-    pathToWork: repos + "/web-component-slider",
-    folderContainerLibraryDistToLink: "/ilsa-apps/ilsa-library",
-    linkName: "@ilsa/library",
-    libraryName: "@ilsa/library",
-    nodeModulesInstall: true,
-    libraryLinkCreate: true,
-    libraryForceUpdate: false,
-  },
-  {
-    name: "web-component-header",
-    active: false,
-    pathToWork: repos + "/web-component-header",
-    folderContainerLibraryDistToLink: "/ilsa-apps/ilsa-library",
-    linkName: "@ilsa/library",
-    libraryName: "@ilsa/library",
-    nodeModulesInstall: true,
-    libraryLinkCreate: true,
-    libraryForceUpdate: false,
-  },
-  {
-    name: "web-component-main-search",
-    active: true,
-    pathToWork: repos + "/web-component-main-search",
-    folderContainerLibraryDistToLink: "/ilsa-apps/ilsa-library",
-    linkName: "@ilsa/library",
-    libraryName: "@ilsa/library",
-    nodeModulesInstall: true,
-    libraryLinkCreate: true,
-    libraryForceUpdate: false,
-  },
-];
-
 module.exports = {
-  options,
+  options: optionsExtra,
   list,
 };
