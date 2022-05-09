@@ -1,6 +1,7 @@
 const fsExtra = require("fs-extra");
 const cp = require("child_process");
 const process = require("process");
+const { stdout } = require("process");
 
 /* Prepare */
 const fnLog = (code, msg) => console.log(`\x1b[3${code}m` + msg + "\x1b[0m");
@@ -39,11 +40,23 @@ function discardChangesInPackage(pathToWork) {
   executeSync("git checkout package-lock.json");
 }
 
+function getCurrentBranchName() {
+  return new Promise((resolve) => {
+    cp.exec("git status", (error, stdout) => {
+      let branchName = stdout.split(" ")[2];
+      branchName = JSON.stringify(branchName);
+      branchName = branchName.replace("\\nChanges", "");
+      resolve(branchName);
+    });
+  });
+}
+
 module.exports = {
   fnLog,
   log,
   createLink,
   writePackage,
   discardChangesInPackage,
+  getCurrentBranchName,
   executeSync,
 };
