@@ -42,11 +42,8 @@ function discardChangesInPackage(pathToWork) {
 
 function getCurrentBranchName() {
   return new Promise((resolve) => {
-    cp.exec("git status", (error, stdout) => {
-      let branchName = stdout.split(" ")[2];
-      branchName = JSON.stringify(branchName);
-      branchName = branchName.replace("\\nChanges", "");
-      resolve(branchName);
+    cp.exec("git rev-parse --abbrev-ref HEAD", (error, stdout) => {
+      resolve(stdout.trim());
     });
   });
 }

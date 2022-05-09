@@ -1,6 +1,6 @@
 module.exports = function (microfrontend, microOpts) {
   const fsExtra = require("fs-extra");
-  const aux = require("./functions/linker-aux");
+  const fns = require("./functions/index.js");
 
   const pathPackageJson = microfrontend.pathToWork + "/package.json";
   let packageJsonOriginal;
@@ -11,19 +11,19 @@ module.exports = function (microfrontend, microOpts) {
     Prepare
   =================================================================== */
 
-  aux.log.info("Preparing " + microfrontend.name);
+  fns.aux.log.info("Preparing " + microfrontend.name);
   for (const optName in microfrontend) {
     const optValue = microfrontend[optName];
     if (!optValue) {
-      aux.log.fail(optName + " is not defined");
+      fns.aux.log.fail(optName + " is not defined");
     }
   }
 
-  aux.log.info(microfrontend.name + " " + "Preparing...");
+  fns.aux.log.info(microfrontend.name + " " + "Preparing...");
 
   /** Cleanup: if the process fail then the last microfrontend clean his own package changes */
   process.on("exit", () =>
-    aux.discardChangesInPackage(microfrontend.pathToWork)
+    fns.aux.discardChangesInPackage(microfrontend.pathToWork)
   );
 
   /* ===================================================================
@@ -37,11 +37,11 @@ module.exports = function (microfrontend, microOpts) {
     microfrontend.libraryForceUpdate ||
     !fsExtra.existsSync(pathAppsWithDist)
   ) {
-    aux.log.warning(
+    fns.aux.log.warning(
       microfrontend.name + " " + pathAppsWithDist + " not exist, creating..."
     );
     fsExtra.emptyDirSync(pathAppsWithDist);
-    aux.log.success(microfrontend.name + " " + "Created " + pathAppsWithDist);
+    fns.aux.log.success(microfrontend.name + " " + "Created " + pathAppsWithDist);
   }
 
   if (
@@ -49,14 +49,14 @@ module.exports = function (microfrontend, microOpts) {
     microfrontend.libraryForceUpdate ||
     fsExtra.readdirSync(pathAppsWithDist)?.length === 0
   ) {
-    aux.log.warning(
+    fns.aux.log.warning(
       microfrontend.name +
         " " +
         pathAppsWithDist +
         " is empty, copying the original dist"
     );
     fsExtra.copySync(microOpts.pathLibraryDist, pathAppsWithDist);
-    aux.log.success(
+    fns.aux.log.success(
       microfrontend.name + " " + "Copied to " + microOpts.pathLibraryDist
     );
   }
@@ -71,14 +71,14 @@ module.exports = function (microfrontend, microOpts) {
 
   if (microfrontend.updateFromBranch) {
     const stashName = "Linker stash " + new Date().now;
-    aux.executeSync(`git stash --save ${stashName}`);
+    fns.aux.executeSync(`git stash --save ${stashName}`);
   }
 
-  aux.log.info(microfrontend.name + " " + "Initializing...");
-  aux.executeSync("cd " + microfrontend.pathToWork);
+  fns.aux.log.info(microfrontend.name + " " + "Initializing...");
+  fns.aux.executeSync("cd " + microfrontend.pathToWork);
 
-  aux.log.info(microfrontend.name + " " + "Unlinking...");
-  aux.executeSync("npm unlink " + microfrontend.linkName);
+  fns.aux.log.info(microfrontend.name + " " + "Unlinking...");
+  fns.aux.executeSync("npm unlink " + microfrontend.linkName);
 
   /* ===================================================================
     Stashing
@@ -86,10 +86,13 @@ module.exports = function (microfrontend, microOpts) {
 
   if (microfrontend.updateFromBranch) {
     const stashName = "Linker stash " + new Date().now;
-    aux.executeSync(`git stash --save ${stashName}`);
-    aux.executeSync(`git checkout ${microfrontend.updateFromBranchName}`);
-    aux.executeSync(`git pull`);
-    aux.executeSync(`git checkout ${microfrontend.updateFromBranchName}`);
+    fns.aux.getCurrentBranchName().then((currentBranchName) => {
+      fns.aux.executeSync(`git stash --save ${stashName}`);
+      fns.aux.executeSync(`git checkout ${microfrontend.updateFromBranchName}`);
+      fns.aux.executeSync(`git pull`);
+      fns.aux.executeSync(`git checkout ${currentBranchName}`);
+      fns.aux.executeSync(`git stash apply`);
+    });
   }
 
   /* ===================================================================
@@ -100,13 +103,13 @@ module.exports = function (microfrontend, microOpts) {
     microOpts.forAllMicrofrontends.nodeModulesInstall ||
     microfrontend.nodeModulesInstall
   ) {
-    aux.log.info(microfrontend.name + " " + "Getting package");
+    fns.aux.log.info(microfrontend.name + " " + "Getting package");
     packageJsonOriginal = fsExtra.readJsonSync(pathPackageJson);
     packageJsonTemp = JSON.parse(JSON.stringify(packageJsonOriginal));
 
-    aux.log.info(microfrontend.name + " " + "Deleting library dependecy");
+    fns.aux.log.info(microfrontend.name + " " + "Deleting library dependecy");
     if (!packageJsonTemp.dependencies?.[microfrontend.libraryName]) {
-      aux.log.fail(
+      fns.aux.log.fail(
         microfrontend.name +
           " " +
           microfrontend.libraryName +
@@ -114,27 +117,27 @@ module.exports = function (microfrontend, microOpts) {
       );
     }
     delete packageJsonTemp.dependencies[microfrontend.libraryName];
-    aux.writePackage(pathPackageJson, packageJsonTemp);
+    fns.aux.writePackage(pathPackageJson, packageJsonTemp);
 
-    aux.log.info(microfrontend.name + " " + "Installing package dependencies");
+    fns.aux.log.info(microfrontend.name + " " + "Installing package dependencies");
     process.chdir(microfrontend.pathToWork);
-    aux.executeSync("npm install");
+    fns.aux.executeSync("npm install");
 
-    aux.log.info(microfrontend.name + " " + "Restoring original package.json");
-    aux.discardChangesInPackage(microfrontend.pathToWork);
+    fns.aux.log.info(microfrontend.name + " " + "Restoring original package.json");
+    fns.aux.discardChangesInPackage(microfrontend.pathToWork);
   }
 
   /* ===================================================================
     POST INSTALL
   =================================================================== */
 
-  aux.log.info(microfrontend.name + " " + "Going to path");
+  fns.aux.log.info(microfrontend.name + " " + "Going to path");
   process.chdir(pathAppsWithDist);
 
-  aux.log.info(microfrontend.name + " " + "Linking...");
-  aux.executeSync("npm link");
+  fns.aux.log.info(microfrontend.name + " " + "Linking...");
+  fns.aux.executeSync("npm link");
   process.chdir(microfrontend.pathToWork);
-  aux.executeSync("npm link " + microfrontend.linkName);
+  fns.aux.executeSync("npm link " + microfrontend.linkName);
 
-  aux.log.success(microfrontend.name + " " + "Link ended");
+  fns.aux.log.success(microfrontend.name + " " + "Link ended");
 };
