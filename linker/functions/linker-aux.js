@@ -40,6 +40,17 @@ function discardChangesInPackage(pathToWork) {
   executeSync("git checkout package-lock.json");
 }
 
+function getCommandParams() {
+  const params = {};
+
+  let myArgs = process.argv.slice(2);
+  myArgs.forEach((slug) => {
+    const partials = slug.split("=");
+    params[partials[0]] = partials[1];
+  });
+  return params;
+}
+
 function getCurrentBranchName() {
   return new Promise((resolve) => {
     cp.exec("git rev-parse --abbrev-ref HEAD", (error, stdout) => {
@@ -56,4 +67,5 @@ module.exports = {
   discardChangesInPackage,
   getCurrentBranchName,
   executeSync,
+  getCommandParams
 };
