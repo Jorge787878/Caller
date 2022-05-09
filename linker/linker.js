@@ -21,6 +21,11 @@ module.exports = function (microfrontend, microOpts) {
 
   aux.log.info(microfrontend.name + " " + "Preparing...");
 
+  /** Cleanup: if the process fail then the last microfrontend clean his own package changes */
+  process.on("exit", () =>
+    aux.discardChangesInPackage(microfrontend.pathToWork)
+  );
+
   pathAppsWithDist =
     microfrontend.pathToWork + microfrontend.folderContainerLibraryDistToLink;
   if (
@@ -87,12 +92,13 @@ module.exports = function (microfrontend, microOpts) {
     aux.executeSync("npm install");
 
     aux.log.info(microfrontend.name + " " + "Restoring original package.json");
-    aux.writePackage(pathPackageJson, packageJsonOriginal);
+    aux.discardChangesInPackage(microfrontend.pathToWork);
   }
 
   /* ===================================================================
-      POST INSTALL
-    =================================================================== */
+    POST INSTALL
+  =================================================================== */
+
   aux.log.info(microfrontend.name + " " + "Going to path");
   process.chdir(pathAppsWithDist);
 

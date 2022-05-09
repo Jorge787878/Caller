@@ -1,5 +1,6 @@
 const fsExtra = require("fs-extra");
 const cp = require("child_process");
+const process = require("process");
 
 /* Prepare */
 const fnLog = (code, msg) => console.log(`\x1b[3${code}m` + msg + "\x1b[0m");
@@ -31,10 +32,18 @@ function createLink(active, name, path) {
   };
 }
 
+function discardChangesInPackage(pathToWork) {
+  console.log("Executing cleanup");
+  process.chdir(pathToWork);
+  executeSync("git checkout package.json");
+  executeSync("git checkout package-lock.json");
+}
+
 module.exports = {
   fnLog,
   log,
   createLink,
   writePackage,
+  discardChangesInPackage,
   executeSync,
 };
