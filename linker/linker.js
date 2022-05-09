@@ -26,6 +26,10 @@ module.exports = function (microfrontend, microOpts) {
     aux.discardChangesInPackage(microfrontend.pathToWork)
   );
 
+  /* ===================================================================
+    Moving dist
+  =================================================================== */
+
   pathAppsWithDist =
     microfrontend.pathToWork + microfrontend.folderContainerLibraryDistToLink;
   if (
@@ -61,11 +65,36 @@ module.exports = function (microfrontend, microOpts) {
     INIT
   =================================================================== */
 
+  /* ===================================================================
+    Unlinking
+  =================================================================== */
+
+  if (microfrontend.updateFromBranch) {
+    const stashName = "Linker stash " + new Date().now;
+    aux.executeSync(`git stash --save ${stashName}`);
+  }
+
   aux.log.info(microfrontend.name + " " + "Initializing...");
   aux.executeSync("cd " + microfrontend.pathToWork);
 
   aux.log.info(microfrontend.name + " " + "Unlinking...");
   aux.executeSync("npm unlink " + microfrontend.linkName);
+
+  /* ===================================================================
+    Stashing
+  =================================================================== */
+
+  if (microfrontend.updateFromBranch) {
+    const stashName = "Linker stash " + new Date().now;
+    aux.executeSync(`git stash --save ${stashName}`);
+    aux.executeSync(`git checkout ${microfrontend.updateFromBranchName}`);
+    aux.executeSync(`git pull`);
+    aux.executeSync(`git checkout ${microfrontend.updateFromBranchName}`);
+  }
+
+  /* ===================================================================
+    Node modules install
+  =================================================================== */
 
   if (
     microOpts.forAllMicrofrontends.nodeModulesInstall ||
