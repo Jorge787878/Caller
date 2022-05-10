@@ -48,6 +48,7 @@ function getCommandParams() {
     const partials = slug.split("=");
     params[partials[0]] = partials[1];
   });
+
   return params;
 }
 
@@ -67,5 +68,5 @@ module.exports = {
   discardChangesInPackage,
   getCurrentBranchName,
   executeSync,
-  getCommandParams
+  getCommandParams,
 };

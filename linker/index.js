@@ -1,19 +1,11 @@
 const linkOpts = require("./linker-config");
 const linker = require("./linker");
+const fns = require("./functions/index");
 
+fns.store.nodeParams = fns.aux.getCommandParams();
 
-const params = {};
+fns.store.microfrontends = fns.store.options.forAllMicrofrontends.active
+  ? fns.store.list
+  : fns.store.list.filter((option) => option.active);
 
-let myArgs = process.argv.slice(2);
-myArgs.forEach((slug) => {
-  const partials = slug.split("=");
-  params[partials[0]] = partials[1];
-});
-
-console.log("myArgs: ", params);
-
-const optionsToUse = linkOpts.options.forAllMicrofrontends.active
-  ? linkOpts.list
-  : linkOpts.list.filter((option) => option.active);
-
-optionsToUse.forEach((option) => linker(option, linkOpts.options));
+fns.store.microfrontends.forEach((option) => linker(option, linkOpts.options));
