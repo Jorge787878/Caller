@@ -1,15 +1,15 @@
 const prepare = require("./prepare");
-const moveDist = require("./move-dist");
-const unlink = require("./unlink");
-const nodeModulesInstall = require("./node-modules");
+const moveDist = require("./dist");
+const unlink = require("./links");
+const nodeModulesInstall = require("./modules");
 const postInstall = require("./post-install");
-const updateBranch = require("./update");
+const updateBranch = require("./git");
 
 module.exports = {
-  prepare,
-  moveDist,
-  unlink,
-  nodeModulesInstall,
-  postInstall,
-  updateBranch,
+  prepare: prepare,
+  dist: moveDist,
+  links: unlink,
+  nModules: nodeModulesInstall,
+  postInstall: postInstall,
+  git: updateBranch,
 };
