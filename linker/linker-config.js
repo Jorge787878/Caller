@@ -4,20 +4,20 @@ const fns = require("./functions/index");
 fns.store.repos = "C:/Users/jjcampoy/Documents/proyectos/vector/ilsa/repos";
 
 fns.store.list = [
-  aux.createLink(false, "web-b2c", repos),
-  aux.createLink(false, "web-b2b", repos),
-  aux.createLink(false, "web-component-slider", repos),
-  aux.createLink(false, "web-component-header", repos),
-  aux.createLink(false, "web-component-main-footer", repos),
-  aux.createLink(false, "web-component-dinamic-footer", repos),
-  aux.createLink(false, "web-component-main-search", repos),
+  aux.createLink(true, "web-b2c", fns.store.repos),
+  aux.createLink(false, "web-b2b", fns.store.repos),
+  aux.createLink(false, "web-component-slider", fns.store.repos),
+  aux.createLink(false, "web-component-header", fns.store.repos),
+  aux.createLink(false, "web-component-main-footer", fns.store.repos),
+  aux.createLink(false, "web-component-dinamic-footer", fns.store.repos),
+  aux.createLink(false, "web-component-main-search", fns.store.repos),
 ];
 
 fns.store.optionsExtra = {
   pathLibraryDist: fns.store.repos + "/ilsa-library/dist/ilsa-library",
   forAllMicrofrontends: {
     active: false,
-    nodeModulesInstall: false,
+    install: false,
     libraryLinkCreate: false,
     libraryForceUpdate: false,
   },

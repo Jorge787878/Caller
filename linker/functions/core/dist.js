@@ -1,8 +1,8 @@
 module.exports = (function () {
   const fsExtra = require("fs-extra");
-  const fns = require("../index");
+  const fns = require("../../functions/index");
 
-  function moveDist(microfrontend, microOpts, pathAppsWithDist) {
+  function move(microfrontend, microOpts, pathAppsWithDist) {
     if (
       microOpts.forAllMicrofrontends.libraryForceUpdate ||
       microfrontend.libraryForceUpdate ||
@@ -36,6 +36,6 @@ module.exports = (function () {
   }
 
   return {
-    moveDist,
+    move,
   };
 })();

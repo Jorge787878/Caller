@@ -1,5 +1,5 @@
 module.exports = (function () {
-  const fns = require("../index");
+  const fns = require("../../functions/index");
 
   function unlink(microfrontend) {
     if (microfrontend.updateFromBranch) {

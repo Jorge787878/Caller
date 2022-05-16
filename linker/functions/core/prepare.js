@@ -1,5 +1,5 @@
 module.exports = (function () {
-  const fns = require("../index");
+  const fns = require("../../functions/index");
   const process = require("process");
 
   function prepare(microfrontend) {

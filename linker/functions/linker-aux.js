@@ -27,7 +27,7 @@ function createLink(active, name, path) {
     folderContainerLibraryDistToLink: "/ilsa-apps/ilsa-library",
     linkName: "@ilsa/library",
     libraryName: "@ilsa/library",
-    nodeModulesInstall: true,
+    install: true,
     libraryLinkCreate: true,
     libraryForceUpdate: false,
   };

@@ -1,5 +1,5 @@
 module.exports = (function () {
-  const fns = require("./functions/index.js");
+  const fns = require("../../functions/index");
   const process = require("process");
 
   function postInstall(microfrontend, pathAppsWithDist) {
@@ -8,6 +8,7 @@ module.exports = (function () {
 
     fns.aux.log.info(microfrontend.name + " " + "Linking...");
     fns.aux.executeSync("npm link");
+    
     process.chdir(microfrontend.pathToWork);
     fns.aux.executeSync("npm link " + microfrontend.linkName);
 

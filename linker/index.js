@@ -4,7 +4,7 @@ const fns = require("./functions/index");
 
 fns.store.nodeParams = fns.aux.getCommandParams();
 
-fns.store.microfrontends = fns.store.options.forAllMicrofrontends.active
+fns.store.microfrontends = fns.store.optionsExtra.forAllMicrofrontends.active
   ? fns.store.list
   : fns.store.list.filter((option) => option.active);
 

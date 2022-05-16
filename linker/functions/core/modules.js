@@ -1,16 +1,16 @@
-module.exports = (function nodeModulesInstall() {
+module.exports = (function install() {
   const fsExtra = require("fs-extra");
   const process = require("process");
-  const fns = require("./functions/index.js");
+  const fns = require("../../functions/index");
 
-  function nodeModulesInstall(  microfrontend,
+  function install(  microfrontend,
     microOpts,
     packageJsonOriginal,
     packageJsonTemp,
     pathPackageJson) {
     if (
-      microOpts.forAllMicrofrontends.nodeModulesInstall ||
-      microfrontend.nodeModulesInstall
+      microOpts.forAllMicrofrontends.install ||
+      microfrontend.install
     ) {
       fns.aux.log.info(microfrontend.name + " " + "Getting package");
       packageJsonOriginal = fsExtra.readJsonSync(pathPackageJson);
@@ -42,6 +42,6 @@ module.exports = (function nodeModulesInstall() {
   }
 
   return {
-    nodeModulesInstall,
+    install,
   };
 })();

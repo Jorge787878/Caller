@@ -10,7 +10,7 @@ module.exports = function (microfrontend, microOpts) {
     Prepare
   =================================================================== */
 
-  fns.core.prepare(microfrontend);
+  fns.core.prepare.prepare(microfrontend);
 
   /* ===================================================================
     Moving dist
@@ -19,13 +19,13 @@ module.exports = function (microfrontend, microOpts) {
   pathAppsWithDist =
     microfrontend.pathToWork + microfrontend.folderContainerLibraryDistToLink;
 
-  fns.core.moveDist(microfrontend, microOpts, pathAppsWithDist);
+  fns.core.dist.move(microfrontend, microOpts, pathAppsWithDist);
 
   /* ===================================================================
   Unlinking
   =================================================================== */
 
-  fns.core.unlink(microfrontend);
+  fns.core.links.unlink(microfrontend);
 
   /* ===================================================================
     Stashing
@@ -33,27 +33,49 @@ module.exports = function (microfrontend, microOpts) {
 
   if (microfrontend.updateFromBranch) {
     fns.aux.getCurrentBranchName().then((currentBranchName) => {
-      fns.core.updateFromBranch(microfrontend, currentBranchName);
+      fns.core.git.stashChangesAndPullFrom(currentBranchName);
+
+      /* ===================================================================
+      Node modules install
+    =================================================================== */
+
+      fns.core.nModules.install(
+        microfrontend,
+        microOpts,
+        packageJsonOriginal,
+        packageJsonTemp,
+        pathPackageJson
+      );
+
+      /* ===================================================================
+      Post install
+    =================================================================== */
+
+      fns.core.createLink(microfrontend, pathAppsWithDist);
+
+      /* ===================================================================
+      Create link
+    =================================================================== */
+
+      fns.core.git.backAndApplyLastestStash(currentBranchName);
     });
+  } else {
+    /* ===================================================================
+      Node modules install
+    =================================================================== */
+
+    fns.core.nModules.install(
+      microfrontend,
+      microOpts,
+      packageJsonOriginal,
+      packageJsonTemp,
+      pathPackageJson
+    );
+
+    /* ===================================================================
+      Post install
+    =================================================================== */
+
+    fns.core.createLink(microfrontend, pathAppsWithDist);
   }
-
-  fns.core.
-
-  /* ===================================================================
-    Node modules install
-  =================================================================== */
-
-  fns.core.nodeModulesInstall(
-    microfrontend,
-    microOpts,
-    packageJsonOriginal,
-    packageJsonTemp,
-    pathPackageJson
-  );
-
-  /* ===================================================================
-    Post install
-  =================================================================== */
-
-  fns.core.postInstall(microfrontend, pathAppsWithDist);
 };

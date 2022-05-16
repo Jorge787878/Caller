@@ -6,7 +6,7 @@ module.exports = {
     pathLibraryDist: "",
     forAllMicrofrontends: {
       active: false,
-      nodeModulesInstall: false,
+      install: false,
       libraryLinkCreate: false,
       libraryForceUpdate: false,
     },

@@ -1,15 +1,51 @@
 module.exports = (function () {
-  const fns = require("../index");
+  const fns = require("../../functions/index");
 
-  function update(microfrontend, currentBranchName) {
-    fns.aux.executeSync(`git stash --save 'Linker'`);
-    fns.aux.executeSync(`git checkout ${microfrontend.updateFromBranchName}`);
-    fns.aux.executeSync(`git pull`);
-    fns.aux.executeSync(`git checkout ${currentBranchName}`);
-    fns.aux.executeSync(`git stash apply`);
+  const stash = {
+    stash() {
+      fns.aux.executeSync(`git stash --save 'Linker'`);
+    },
+    applyLastest() {
+      fns.aux.executeSync(`git stash apply`);
+    },
+  };
+
+  const checkout = {
+    moveTobranch(name) {
+      fns.aux.executeSync(`git checkout ${name}`);
+    },
+  };
+
+  const actions = {
+    pull() {
+      fns.aux.executeSync(`git pull`);
+    },
+    discard: {
+      packageJSONChanges() {
+        fns.aux.executeSync(`git checkout packa`);
+      }
+    }
+  };
+
+  function stashChangesAndPullFrom(branchName) {
+    stash.stash();
+    checkout.moveTobranch(branchName);
+    actions.pull();
+  }
+
+  function backAndApplyLastestStash(branchName) {
+    checkout.moveTobranch(branchName);
+    stash.applyLastest();
+    actions.discard.packageJSONChanges()
   }
 
   return {
-    update,
+    utils: {
+      stash,
+      checkout,
+      actions,
+    },
+    stashChangesAndPullFrom,
+    backAndApplyLastestStash,
   };
 })();
