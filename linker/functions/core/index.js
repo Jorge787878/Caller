@@ -6,7 +6,7 @@ const postInstall = require("./post-install");
 const updateBranch = require("./git");
 
 module.exports = {
-  prepare: prepare,
+  prepare,
   dist: moveDist,
   links: unlink,
   nModules: install,

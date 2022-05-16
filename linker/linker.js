@@ -10,7 +10,7 @@ module.exports = function (microfrontend, microOpts) {
     Prepare
   =================================================================== */
 
-  fns.core.prepare.prepare(microfrontend);
+  fns.core.prepare(microfrontend);
 
   /* ===================================================================
     Moving dist
@@ -19,7 +19,7 @@ module.exports = function (microfrontend, microOpts) {
   pathAppsWithDist =
     microfrontend.pathToWork + microfrontend.folderContainerLibraryDistToLink;
 
-  fns.core.dist.move(microfrontend, microOpts, pathAppsWithDist);
+  fns.core.dist.move(microfrontend, fns.store.optionsExtra, pathAppsWithDist);
 
   /* ===================================================================
   Unlinking
@@ -76,6 +76,6 @@ module.exports = function (microfrontend, microOpts) {
       Post install
     =================================================================== */
 
-    fns.core.createLink(microfrontend, pathAppsWithDist);
+    fns.core.createLink.postInstall(microfrontend, pathAppsWithDist);
   }
 };

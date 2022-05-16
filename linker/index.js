@@ -8,4 +8,4 @@ fns.store.microfrontends = fns.store.optionsExtra.forAllMicrofrontends.active
   ? fns.store.list
   : fns.store.list.filter((option) => option.active);
 
-fns.store.microfrontends.forEach((option) => linker(option, linkOpts.options));
+fns.store.microfrontends.forEach((option) => linker(option, fns.store.optionsExtra));

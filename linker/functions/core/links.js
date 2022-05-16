@@ -1,7 +1,8 @@
-module.exports = (function () {
-  const fns = require("../../functions/index");
-
+const links = function() {
+  
   function unlink(microfrontend) {
+    const fns = require("../../functions/index");
+    
     if (microfrontend.updateFromBranch) {
       const stashName = "Linker stash " + new Date().now;
       fns.aux.executeSync(`git stash --save ${stashName}`);
@@ -17,4 +18,6 @@ module.exports = (function () {
   return {
     unlink,
   };
-})();
+};
+
+module.exports = links();

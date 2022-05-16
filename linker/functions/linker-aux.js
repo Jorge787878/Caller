@@ -1,7 +1,6 @@
 const fsExtra = require("fs-extra");
 const cp = require("child_process");
 const process = require("process");
-const { stdout } = require("process");
 
 /* Prepare */
 const fnLog = (code, msg) => console.log(`\x1b[3${code}m` + msg + "\x1b[0m");
