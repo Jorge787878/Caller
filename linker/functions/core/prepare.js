@@ -5,7 +5,7 @@ function prepare(microfrontend) {
   fns.aux.log.info("Preparing " + microfrontend.name);
   for (const optName in microfrontend) {
     const optValue = microfrontend[optName];
-    if (!optValue) {
+    if (optValue === undefined) {
       fns.aux.log.fail(optName + " is not defined");
     }
   }
@@ -13,9 +13,9 @@ function prepare(microfrontend) {
   fns.aux.log.info(microfrontend.name + " " + "Preparing...");
 
   /** Cleanup: if the process fail then the last microfrontend clean his own package changes */
-  // process.on("exit", () =>
-  //   fns.aux.discardChangesInPackage(microfrontend.pathToWork)
-  // );
+  process.on("exit", () =>
+    fns.aux.discardChangesInPackage(microfrontend.pathToWork)
+  );
 }
 
 module.exports = prepare;

@@ -1,11 +1,12 @@
-const links = function() {
-  
+const links = function () {
   function unlink(microfrontend) {
     const fns = require("../../functions/index");
-    
+    const process = require("process");
+
     if (microfrontend.updateFromBranch) {
-      const stashName = "Linker stash " + new Date().now;
-      fns.aux.executeSync(`git stash --save ${stashName}`);
+      process.chdir(microfrontend.pathToWork)
+      fns.aux.executeSync(`git stash save Linker`);
+      new fns.core.git().stashChangesAndPullFrom(microfrontend.updateFromBranchName)
     }
 
     fns.aux.log.info(microfrontend.name + " " + "Initializing...");

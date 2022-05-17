@@ -33,7 +33,7 @@ module.exports = function (microfrontend, microOpts) {
 
   if (microfrontend.updateFromBranch) {
     fns.aux.getCurrentBranchName().then((currentBranchName) => {
-      fns.core.git.stashChangesAndPullFrom(currentBranchName);
+      new fns.core.git().stashChangesAndPullFrom(currentBranchName);
 
       /* ===================================================================
       Node modules install
@@ -57,7 +57,7 @@ module.exports = function (microfrontend, microOpts) {
       Create link
     =================================================================== */
 
-      fns.core.git.backAndApplyLastestStash(currentBranchName);
+      new fns.core.git().backAndApplyLastestStash(currentBranchName);
     });
   } else {
     /* ===================================================================

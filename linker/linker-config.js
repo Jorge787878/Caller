@@ -4,7 +4,7 @@ const fns = require("./functions/index");
 fns.store.repos = "C:/Users/jjcampoy/Documents/proyectos/vector/ilsa/repos";
 
 fns.store.list = [
-  aux.createLink(true, "web-b2c", fns.store.repos),
+  aux.createLink(true, "web-b2c", fns.store.repos, true),
   aux.createLink(false, "web-b2b", fns.store.repos),
   aux.createLink(false, "web-component-slider", fns.store.repos),
   aux.createLink(false, "web-component-header", fns.store.repos),

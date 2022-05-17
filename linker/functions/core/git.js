@@ -1,50 +1,40 @@
-const fns = require("../../functions/index");
+class Gits {
+  constructor() {
+    this.fns = require("../index");
+  }
 
-const stash = {
   stash() {
-    fns.aux.executeSync(`git stash --save 'Linker'`);
-  },
+    this.fns.aux.executeSync(`git stash save Linker`);
+  }
   applyLastest() {
-    fns.aux.executeSync(`git stash apply`);
-  },
-};
+    this.fns.aux.executeSync(`git stash apply`);
+  }
 
-const checkout = {
   moveTobranch(name) {
-    fns.aux.executeSync(`git checkout ${name}`);
-  },
-};
+    this.fns.aux.executeSync(`git checkout ${name}`);
+  }
 
-const actions = {
   pull() {
-    fns.aux.executeSync(`git pull`);
-  },
-  discard: {
+    this.fns.aux.executeSync(`git pull`);
+  }
+  discard = {
     packageJSONChanges() {
-      fns.aux.executeSync("git checkout package.json");
-      fns.aux.executeSync("git checkout package-lock.json");
+      this.fns.aux.executeSync("git checkout package.json");
+      this.fns.aux.executeSync("git checkout package-lock.json");
     },
-  },
-};
+  };
 
-function stashChangesAndPullFrom(branchName) {
-  stash.stash();
-  checkout.moveTobranch(branchName);
-  actions.pull();
+  stashChangesAndPullFrom(branchName) {
+    this.stash();
+    this.moveTobranch(branchName);
+    this.pull();
+  }
+
+  backAndApplyLastestStash(branchName) {
+    this.moveTobranch(branchName);
+    this.applyLastest();
+    this.discard.packageJSONChanges();
+  }
 }
 
-function backAndApplyLastestStash(branchName) {
-  checkout.moveTobranch(branchName);
-  stash.applyLastest();
-  actions.discard.packageJSONChanges();
-}
-
-module.exports = {
-  utils: {
-    stash,
-    checkout,
-    actions,
-  },
-  stashChangesAndPullFrom,
-  backAndApplyLastestStash,
-};
+module.exports = Gits;

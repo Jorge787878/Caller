@@ -1,4 +1,5 @@
 const cp = require("child_process");
+const process = require("process");
 const fsExtra = require("fs-extra");
 
 // let emptyDir = fsExtra.emptyDirSync('./foo')
@@ -16,12 +17,20 @@ const fsExtra = require("fs-extra");
 
 // console.log("myArgs: ", params);
 
-function getCurrentBranchName() {
-  return new Promise((resolve) => {
-    cp.exec("git rev-parse --abbrev-ref HEAD", (error, stdout) => {
-      resolve(stdout.trim());
-    });
-  });
-}
+// function getCurrentBranchName() {
+//   return new Promise((resolve) => {
+//     cp.exec("git rev-parse --abbrev-ref HEAD", (error, stdout) => {
+//       resolve(stdout.trim());
+//     });
+//   });
+// }
 
-getCurrentBranchName().then(a => console.log(a))
+// getCurrentBranchName().then(a => console.log(a))
+
+process.chdir(
+  "C:/Users/jjcampoy/Documents/proyectos/vector/ilsa/repos/web-b2c"
+);
+console.log(process.cwd());
+
+cp.execSync('git stash apply');
+cp.execSync('git stash drop');

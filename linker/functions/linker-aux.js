@@ -18,7 +18,13 @@ const writePackage = (pathToWrite, newPackage) =>
 const executeSync = (command) =>
   cp.execSync(command, { stdio: "inherit", maxBuffer: Infinity });
 
-function createLink(active, name, path) {
+function createLink(
+  active,
+  name,
+  path,
+  updateFromBranch = false,
+  updateFromBranchName = "develop"
+) {
   return {
     name,
     active,
@@ -29,6 +35,8 @@ function createLink(active, name, path) {
     install: true,
     libraryLinkCreate: true,
     libraryForceUpdate: false,
+    updateFromBranch: updateFromBranch,
+    updateFromBranchName: updateFromBranchName,
   };
 }
 
